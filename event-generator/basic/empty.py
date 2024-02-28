@@ -14,6 +14,7 @@
 
 
 import argparse
+import datetime
 import json
 import uuid
 
@@ -31,20 +32,16 @@ def send_game_events(project_id, topic_id):
     publisher = pubsub.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_id)
 
-    message = pubsub.PublisherMessage()
+    data = json.dumps({"GameId": "123"}).encode("utf-8")
 
-    message.data = json.dumps({"GameId": "123"}).encode("utf-8")
-
-    message.attributes["PinballEventType"] = "GameStarted"
-    message.attributes["MachineId"] = machine_id
-    message.attributes["Simulated"] = str(simulated)
-    message.attributes["Timestamp"] = datetime.datetime.now().isoformat()
-
-    message.publish(topic_path)
-    print("Done?")
-
-
-print(f"Published messages to {topic_path}.")
+    future = publisher.publish(topic_path, data,
+        PinballEventType="GameStarted",
+        MachineId=machine_id,
+        Simulated=str(simulated),
+        Timestamp=datetime.datetime.now().isoformat(),
+    )
+    print(future.result())
+    print(f"Published messages to {topic_path}.")
 
 
 def main():
