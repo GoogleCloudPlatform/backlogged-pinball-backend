@@ -16,6 +16,7 @@
 import argparse
 import datetime
 import json
+import time
 import uuid
 
 from google.cloud import pubsub_v1 as pubsub
@@ -28,11 +29,12 @@ machine_id = f"BL:{uuid.uuid4().hex}"
 simulated = True
 
 
-def send_game_events(project_id, topic_id):
+def send_game_events(project_id, topic_id, game_id="generated"):
     publisher = pubsub.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_id)
 
-    data = json.dumps({"GameId": "123"}).encode("utf-8")
+    # Start game
+    data = json.dumps({"GameId": game_id}).encode("utf-8")
 
     future = publisher.publish(topic_path, data,
         PinballEventType="GameStarted",
@@ -41,6 +43,21 @@ def send_game_events(project_id, topic_id):
         Timestamp=datetime.datetime.now().isoformat(),
     )
     print(future.result())
+
+    # Let the game last a *little* while, at least
+    time.sleep(1)
+
+    # End game
+    data = json.dumps({"GameId": game_id, "TotalScore": 0, "GameLengthMillieconds": 1000}).encode("utf-8")
+
+    future = publisher.publish(topic_path, data,
+        PinballEventType="GameEnded",
+        MachineId=machine_id,
+        Simulated=str(simulated),
+        Timestamp=datetime.datetime.now().isoformat(),
+    )
+    print(future.result())
+
     print(f"Published messages to {topic_path}.")
 
 
