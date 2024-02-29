@@ -29,7 +29,7 @@ machine_id = f"BL:{uuid.uuid4().hex}"
 simulated = True
 
 
-def send_game_events(project_id, topic_id, game_id="generated"):
+def send_game_events(project_id=default_project_id, topic_id=default_topic_id, game_id="generated"):
     publisher = pubsub.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_id)
 
