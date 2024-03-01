@@ -31,7 +31,7 @@ class Game:
             game_id="generated", 
             machine_id=f"BL:{uuid.uuid4().hex}", 
             simulated = True,
-            acceleration = 1.0  # How many times as fast as realtime play
+            acceleration = 100.0  # How many times as fast as realtime play
         ):
         self.project_id = project_id
         self.topic_id = topic_id
@@ -71,31 +71,30 @@ class Game:
 
 
     def end(self, score):
-        game_length = datetime.datetime.now() - self.started_at
-        self.send_event("GameEnded", {"TotalScore": score, "GameLengthMilliseconds": self.elapsed_ms()})
+        game_length = self.acceleration * self.elapsed_ms()
+        self.send_event("GameEnded", {"TotalScore": score, "GameLengthMilliseconds": game_length})
 
 
     def launch(self, count):
         self.send_event("BallLaunched", {
             "LaunchedBallCount": count,
             "IsMultiball": count > 1,
-            "InGameTime": self.elapsed_ms()
+            "InGameTime": self.acceleration * self.elapsed_ms()
         })
 
 
-    def drain(self, count):
+    def drain(self, is_multiball=False, count=1):
         self.send_event("BallDrained", {
             "DrainedBallCount": count,
-            "IsMultiball": count > 1,
-            "InGameTime": self.elapsed_ms()
+            "IsMultiball": is_multiball,
+            "InGameTime": self.acceleration *self.elapsed_ms()
         })
 
 
     def multiball(self, score):
         self.send_event("MultiballStarted", {
             "CurrentScore": score,
-            "IsMultiball": count > 1,
-            "InGameTime": self.elapsed_ms()
+            "InGameTime": self.acceleration * self.elapsed_ms()
         })
 
 
