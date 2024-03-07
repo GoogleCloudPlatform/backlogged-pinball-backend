@@ -27,12 +27,9 @@ func init() {
 	functions.CloudEvent("allLoggerFunction", allLoggerFunction)
 }
 
-// Function myCloudEventFunction accepts and handles a CloudEvent object
+// Function allLoggerFunction and handles a CloudEvent object
 func allLoggerFunction(ctx context.Context, e event.Event) error {
-	// Your code here
-	// Access the CloudEvent data payload via e.Data() or e.DataAs(...)
-
-	// Return nil if no error occurred
 	fmt.Printf("pinball-event: %s", e.Data())
+	// Return nil if no error occurred
 	return nil
 }
