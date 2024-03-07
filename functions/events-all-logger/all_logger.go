@@ -16,6 +16,8 @@ package all_logger
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
@@ -27,9 +29,47 @@ func init() {
 	functions.CloudEvent("allLoggerFunction", allLoggerFunction)
 }
 
-// Function allLoggerFunction and handles a CloudEvent object
+// Simulating an Event struct for demonstration
+type PinballEventMessage struct {
+	Data string `json:"data"` // Assume 'data' is the base64-encoded string
+	// ... other fields you might have
+}
+
+// Function myCloudEventFunction accepts and handles a CloudEvent object
 func allLoggerFunction(ctx context.Context, e event.Event) error {
-	fmt.Printf("pinball-event: %s", e.Data())
-	// Return nil if no error occurred
+	// Parse the JSON into a generic map
+	var jsonData map[string]interface{}
+	if err := json.Unmarshal([]byte(e.Data()), &jsonData); err != nil {
+		return fmt.Errorf("error parsing JSON: %v", err)
+	}
+	fmt.Printf("pinball-event-unedited: %s\n", jsonData)
+
+	// Check for 'message' map
+	if messageData, ok := jsonData["message"].(map[string]interface{}); ok {
+		// Extract and decode the 'data' field from 'message'
+		if encodedData, ok := messageData["data"].(string); ok {
+			decodedData, err := base64.StdEncoding.DecodeString(encodedData)
+			if err != nil {
+				return fmt.Errorf("error decoding base64: %v", err)
+			}
+			fmt.Printf("decodedData: '%s'\n", string(decodedData))
+			dataStr := string(decodedData)
+
+			jsonData["message"] = messageData
+			messageData["data"] = dataStr
+
+			// Re-serialize
+			updatedJSON, err := json.Marshal(jsonData)
+			if err != nil {
+				return fmt.Errorf("error re-serializing JSON: %v", err)
+			}
+			fmt.Printf("pinball-event: %s\n", updatedJSON)
+		} else {
+			return fmt.Errorf("data field not found within message or not a string")
+		}
+	} else {
+		return fmt.Errorf("message field not found")
+	}
+
 	return nil
 }
