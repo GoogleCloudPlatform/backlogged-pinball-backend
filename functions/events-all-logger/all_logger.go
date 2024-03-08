@@ -29,41 +29,45 @@ func init() {
 	functions.CloudEvent("allLoggerFunction", allLoggerFunction)
 }
 
-// Simulating an Event struct for demonstration
-type PinballEventMessage struct {
-	Data string `json:"data"` // Assume 'data' is the base64-encoded string
-	// ... other fields you might have
-}
-
 // Function myCloudEventFunction accepts and handles a CloudEvent object
 func allLoggerFunction(ctx context.Context, e event.Event) error {
+	// Print out the raw data to start, so we always see *something* in the logs.
+	fmt.Printf("pinball-event-raw: %s", e.Data())
+
 	// Parse the JSON into a generic map
-	var jsonData map[string]interface{}
-	if err := json.Unmarshal([]byte(e.Data()), &jsonData); err != nil {
+	var event map[string]interface{}
+	if err := json.Unmarshal([]byte(e.Data()), &event); err != nil {
 		return fmt.Errorf("error parsing JSON: %v", err)
 	}
-	fmt.Printf("pinball-event-unedited: %s\n", jsonData)
 
-	// Check for 'message' map
-	if messageData, ok := jsonData["message"].(map[string]interface{}); ok {
+	// Expect events to have a base64 encoded 'data' field. This doesn't
+	// make for great log messages. Decode and replace before logging.
+	// Stat by checking for 'message'
+	if message, ok := event["message"].(map[string]interface{}); ok {
 		// Extract and decode the 'data' field from 'message'
-		if encodedData, ok := messageData["data"].(string); ok {
-			decodedData, err := base64.StdEncoding.DecodeString(encodedData)
+		if dataEncoded, ok := message["data"].(string); ok {
+			dataDecoded, err := base64.StdEncoding.DecodeString(dataEncoded)
 			if err != nil {
 				return fmt.Errorf("error decoding base64: %v", err)
 			}
-			fmt.Printf("decodedData: '%s'\n", string(decodedData))
-			dataStr := string(decodedData)
 
-			jsonData["message"] = messageData
-			messageData["data"] = dataStr
+			// Parse the JSON into a generic map, so we get a complete
+			// JSON doc after we add it back to the message a re-serialize
+			var data map[string]interface{}
+			if err := json.Unmarshal([]byte(dataDecoded), &data); err != nil {
+				return fmt.Errorf("error parsing JSON from 'data' field: %v", err)
+			}
+
+			message["data"] = data
 
 			// Re-serialize
-			updatedJSON, err := json.Marshal(jsonData)
+			updatedJSON, err := json.Marshal(event)
 			if err != nil {
 				return fmt.Errorf("error re-serializing JSON: %v", err)
 			}
-			fmt.Printf("pinball-event: %s\n", updatedJSON)
+			// Print as JSON string, so Cloud Logging will parse as JSON
+			// ("Structured Logging") and allow querying by fields in the document
+			fmt.Printf("%s\n", updatedJSON)
 		} else {
 			return fmt.Errorf("data field not found within message or not a string")
 		}
