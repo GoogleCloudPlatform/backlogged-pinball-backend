@@ -17,8 +17,6 @@ import AverageScore from "../components/average-score";
 import HighScore from "../components/high-score";
 import LongestGameLength from "../components/longest-game-length";
 
-
-// Stats page for pinball game
 export default function Stats() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
