@@ -21,7 +21,6 @@ export default function Stats() {
       setGameEvents(gameEvents.map((doc) => {
         const data = doc.data();
         console.log({data})
-        debugger;
         return ({
           id: doc.data().messageId,
           gameId: doc.data().data.GameId,
