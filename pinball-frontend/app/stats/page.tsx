@@ -1,15 +1,3 @@
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 'use client'
 
 import AverageGameLength from "../components/average-game-length";
@@ -17,25 +5,44 @@ import AverageScore from "../components/average-score";
 import HighScore from "../components/high-score";
 import LongestGameLength from "../components/longest-game-length";
 
-// stats page
 export default function Stats() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        {'High Score: '}
-        <HighScore />
+    <main className="grid grid-cols-2 p-24">
+      <div className="border max-w-sm rounded overflow-hidden shadow-lg m-2">
+        <div className="px-6 py-4 text-center">
+          <div className="mb-2">High Score</div>
+          <div className="font-bold text-4xl">
+            <HighScore />
+          </div>
+          <div className="mb-2 -mt-2">points</div>
+        </div>
       </div>
-      <div>
-        {'Longest Game: '}
-        <LongestGameLength />
+      <div className="border max-w-sm rounded overflow-hidden shadow-lg m-2">
+        <div className="px-6 py-4 text-center">
+          <div className="mb-2">Longest Game</div>
+          <div className="font-bold text-4xl">
+            <LongestGameLength />
+          </div>
+          <div className="mb-2 -mt-2">seconds</div>
+        </div>
       </div>
-      <div>
-        {'Average Score: '}
-        <AverageScore />
+      <div className="border max-w-sm rounded overflow-hidden shadow-lg m-2">
+        <div className="px-6 py-4 text-center">
+          <div className="mb-2">Average Score</div>
+          <div className="font-bold text-4xl">
+            <AverageScore />
+          </div>
+          <div className="mb-2 -mt-2">points</div>
+        </div>
       </div>
-      <div>
-        {'Average Game Length: '}
-        <AverageGameLength />
+      <div className="border max-w-sm rounded overflow-hidden shadow-lg m-2">
+        <div className="px-6 py-4 text-center">
+          <div className="mb-2">Average Game Length</div>
+          <div className="font-bold text-4xl">
+            <AverageGameLength />
+          </div>
+          <div className="mb-2 -mt-2">seconds</div>
+        </div>
       </div>
     </main>
   );
