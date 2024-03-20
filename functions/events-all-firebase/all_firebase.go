@@ -15,15 +15,19 @@
 package all_firebase
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 
+	"cloud.google.com/go/firestore"
 	"firebase.google.com/go/v4"
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/cloudevents/sdk-go/v2/event"
+	"google.golang.org/api/iterator"
 )
 
 func init() {
@@ -66,6 +70,14 @@ func allFirebaseFunction(ctx context.Context, e event.Event) error {
 		return fmt.Errorf("data field not found within message or not a string")
 	}
 
+	// Move all attributes to the message itself (for ease of use in the web app)
+	var attributes = message["attributes"].(map[string]interface{})
+	for key, value := range attributes {
+		// log.Printf("attribute: %v : %v\n", key, value)
+		message[key] = value
+	}
+	delete(message, "attributes")
+
 	// Time to publish to Firebase
 
 	app, err := firebase.NewApp(context.Background(), nil)
@@ -79,6 +91,14 @@ func allFirebaseFunction(ctx context.Context, e event.Event) error {
 	}
 	defer client.Close()
 
+	// Check if event is starting a game and if so, clear out the previous events
+	if message["PinballEventType"] == "GameStarted" {
+		log.Println("GameStarted")
+		var buff bytes.Buffer
+		deleteCollection(&buff, ctx, *client, "LiveGameEvents", 40)
+		log.Print(buff)
+	}
+
 	publishTime, ok := message["publishTime"].(string)
 	if !ok {
 		return fmt.Errorf("messageId field not found")
@@ -90,5 +110,47 @@ func allFirebaseFunction(ctx context.Context, e event.Event) error {
 		log.Fatalf("An error has occurred: %s", err)
 	}
 
+	return nil
+}
+
+// from: https://firebase.google.com/docs/firestore/manage-data/delete-data
+// "The snippets below are somewhat simplified and do not deal with error
+// handling, security, deleting subcollections, or maximizing performance"
+func deleteCollection(w io.Writer, ctx context.Context, client firestore.Client, collectionName string,
+	batchSize int) error {
+
+	col := client.Collection(collectionName)
+	bulkwriter := client.BulkWriter(ctx)
+
+	for {
+		// Get a batch of documents
+		iter := col.Limit(batchSize).Documents(ctx)
+		numDeleted := 0
+
+		// Iterate through the documents, adding
+		// a delete operation for each one to the BulkWriter.
+		for {
+			doc, err := iter.Next()
+			if err == iterator.Done {
+				break
+			}
+			if err != nil {
+				return err
+			}
+
+			bulkwriter.Delete(doc.Ref)
+			numDeleted++
+		}
+
+		// If there are no documents to delete,
+		// the process is over.
+		if numDeleted == 0 {
+			bulkwriter.End()
+			break
+		}
+
+		bulkwriter.Flush()
+	}
+	fmt.Fprintf(w, "Deleted collection \"%s\"", collectionName)
 	return nil
 }
