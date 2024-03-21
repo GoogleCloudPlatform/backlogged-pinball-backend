@@ -1,60 +1,100 @@
 'use client'
 
-import { limit, onSnapshot, orderBy, query } from "firebase/firestore";
+import { limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { liveGameEventsRef } from "../firebase";
 import { useEffect, useState } from "react";
 
 type GameEvent = {
-  id: string,
+  messageId: string,
   gameId: string,
   machineId: string,
   pinballEventType: string,
+  data: string,
 }
 
 export default function Stats() {
   const [gameEvents, setGameEvents] = useState<GameEvent[]>([]);
-  const liveEventsQuery = query(liveGameEventsRef, orderBy('publishTime', 'desc'), limit(20))
+  const [showReal, setShowReal] = useState(true);
+  const [showSimulated, setShowSimulated] = useState(true);
   useEffect(() => {
+    const liveEventsQuery = query(liveGameEventsRef, where('Simulated', 'in', [showReal ? 'False' : '', showSimulated ? 'True' : '']), limit(100));
     const unsubscribe = onSnapshot(liveEventsQuery, (querySnapshot) => {
-      const gameEvents = querySnapshot.docs;
-      console.log(gameEvents)
-      setGameEvents(gameEvents.map((doc) => {
-        const data = doc.data();
-        console.log({data})
+      const gameEvents = querySnapshot.docs.map((doc) => {
+        const { GameId, ...data } = doc.data().data; // remove GameId from data
+        // sorts the keys so they are always printed in the same order
+        const sortedData = JSON.stringify(data, Object.keys(data).sort());
         return ({
-          id: doc.data().messageId,
-          gameId: doc.data().data.GameId,
-          machineId: doc.data().attributes.MachineId,
-          pinballEventType: doc.data().attributes.PinballEventType,
+          messageId: doc.data().messageId,
+          publishTime: doc.data().publishTime,
+          gameId: doc.data().GameId,
+          machineId: doc.data().MachineId,
+          pinballEventType: doc.data().PinballEventType,
+          data: sortedData,
         })
-      }));
+      });
+      const sortedGameEvents = gameEvents.sort((a, b) => a.publishTime < b.publishTime ? 1 : -1)
+      setGameEvents(sortedGameEvents);
     });
     return unsubscribe;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [showReal, showSimulated]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left rtl:text-right">
-          <thead className="text-xs uppercase">
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 overflow-x-hidden">
+      <div className="relative">
+        <label>
+          <input
+            type="checkbox"
+            checked={showReal}
+            onChange={(event) => setShowReal(event.target.checked)}
+          />
+          Show Real
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={showSimulated}
+            onChange={(event) => setShowSimulated(event.target.checked)}
+          />
+          Show Simulated
+        </label>
+        <p>Is My Value checked? {JSON.stringify({showSimulated, showReal, array: [showReal ? 'True' : '', showSimulated ? 'False' : '']})}</p>
+        <table className="w-full text-left text-xs font-thin">
+          <thead>
             <tr>
+              <th scope="col" className="px-6 py-3">
+                Message ID
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Machine ID
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Game ID
+              </th>
               <th scope="col" className="px-6 py-3">
                 Game Event
               </th>
               <th scope="col" className="px-6 py-3">
-                Machine ID
+                Event Data
               </th>
             </tr>
           </thead>
           <tbody>
             {gameEvents.map((gameEvent) => (
-              <tr key={gameEvent.id} className="" >
-                <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
-                  {gameEvent.pinballEventType}
-                </th>
+              <tr key={gameEvent.messageId} className="" >
+                <td scope="row" className="px-6 py-4 whitespace-nowrap">
+                  {gameEvent.messageId}
+                </td>
                 <td className="px-6 py-4">
                   {gameEvent.machineId}
+                </td>
+                <td className="px-6 py-4">
+                  {gameEvent.gameId}
+                </td>
+                <td scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-xl">
+                  {gameEvent.pinballEventType}
+                </td>
+                <td scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-xl">
+                  {gameEvent.data}
                 </td>
               </tr>
             ))}
