@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from 'next/image'
 
 export default function Home() {
   return (
@@ -63,6 +64,14 @@ export default function Home() {
             See how this project was built.
           </p>
         </Link>
+      </div>
+      <div>
+        <Image
+          src="/backlogged-beaver.png"
+          width={500}
+          height={500}
+          alt="Cartoon beaver holding a keyboard"
+        />
       </div>
     </main>
   );
