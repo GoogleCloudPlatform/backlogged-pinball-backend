@@ -39,25 +39,26 @@ export default function Stats() {
   }, [showReal, showSimulated]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 overflow-x-hidden">
-      <div className="relative">
-        <label>
-          <input
-            type="checkbox"
-            checked={showReal}
-            onChange={(event) => setShowReal(event.target.checked)}
-          />
-          Show Real
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={showSimulated}
-            onChange={(event) => setShowSimulated(event.target.checked)}
-          />
-          Show Simulated
-        </label>
-        <p>Is My Value checked? {JSON.stringify({showSimulated, showReal, array: [showReal ? 'True' : '', showSimulated ? 'False' : '']})}</p>
+    <main className="flex min-h-screen flex-col justify-between overflow-x-hidden">
+      <div className="w-full">
+        <div className="flex justify-around p-12">
+          <label>
+            <input
+              type="checkbox"
+              checked={showReal}
+              onChange={(event) => setShowReal(event.target.checked)}
+            />
+            Show Real
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={showSimulated}
+              onChange={(event) => setShowSimulated(event.target.checked)}
+            />
+            Show Simulated
+          </label>
+        </div>
         <table className="w-full text-left text-xs font-thin">
           <thead>
             <tr>
@@ -101,7 +102,6 @@ export default function Stats() {
           </tbody>
         </table>
       </div>
-
     </main >
   );
 }

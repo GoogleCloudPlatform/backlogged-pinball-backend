@@ -15,7 +15,6 @@ export default function AverageScore() {
       }
     });
     return unsubscribe;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (gameLength === null) return 'Loading...';
