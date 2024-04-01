@@ -24,7 +24,6 @@ import (
 	"log"
 
 	"cloud.google.com/go/firestore"
-	"firebase.google.com/go/v4"
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/cloudevents/sdk-go/v2/event"
 	"google.golang.org/api/iterator"
@@ -108,6 +107,12 @@ func allFirebaseFunction(ctx context.Context, e event.Event) error {
 	if err != nil {
 		// If that doesn't work, not much we can do. Log and exit.
 		log.Fatalf("An error has occurred: %s", err)
+	}
+
+	// Write to the AllGameEvents collection
+	_, err = client.Collection("AllGameEvents").Doc(publishTime).Set(ctx, message)
+	if err != nil {
+		log.Fatalf("Failed to write to AllGameEvents: %v", err)
 	}
 
 	return nil
