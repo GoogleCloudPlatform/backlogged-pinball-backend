@@ -8,7 +8,7 @@ import LongestGameLength from "../components/longest-game-length";
 export default function Stats() {
   return (
     <main className="grid grid-cols-2 p-24">
-      <div className="border max-w-sm rounded overflow-hidden shadow-lg m-2">
+      <div className="flex justify-center border rounded overflow-hidden shadow-lg m-2 mx-auto  w-80">
         <div className="px-6 py-4 text-center">
           <div className="mb-2">High Score</div>
           <div className="font-bold text-4xl">
@@ -17,7 +17,7 @@ export default function Stats() {
           <div className="mb-2 -mt-2">points</div>
         </div>
       </div>
-      <div className="border max-w-sm rounded overflow-hidden shadow-lg m-2">
+      <div className="flex justify-center border rounded overflow-hidden shadow-lg m-2 mx-auto  w-80">
         <div className="px-6 py-4 text-center">
           <div className="mb-2">Longest Game</div>
           <div className="font-bold text-4xl">
@@ -26,7 +26,7 @@ export default function Stats() {
           <div className="mb-2 -mt-2">seconds</div>
         </div>
       </div>
-      <div className="border max-w-sm rounded overflow-hidden shadow-lg m-2">
+      <div className="flex justify-center border rounded overflow-hidden shadow-lg m-2 mx-auto  w-80">
         <div className="px-6 py-4 text-center">
           <div className="mb-2">Average Score</div>
           <div className="font-bold text-4xl">
@@ -35,7 +35,7 @@ export default function Stats() {
           <div className="mb-2 -mt-2">points</div>
         </div>
       </div>
-      <div className="border max-w-sm rounded overflow-hidden shadow-lg m-2">
+      <div className="flex justify-center border rounded overflow-hidden shadow-lg m-2 mx-auto  w-80">
         <div className="px-6 py-4 text-center">
           <div className="mb-2">Average Game Length</div>
           <div className="font-bold text-4xl">

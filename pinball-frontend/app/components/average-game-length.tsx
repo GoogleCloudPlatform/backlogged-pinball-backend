@@ -5,13 +5,13 @@ import { completedGamesRef } from "../firebase";
 import { average, getAggregateFromServer, onSnapshot, query } from "firebase/firestore";
 
 export default function AverageGameLength() {
-  const [gameLength, setGameLength] = useState<number | null>(null);
+  const [gameLength, setGameLength] = useState<string | null>(null);
   useEffect(() => {
     const unsubscribe = onSnapshot(query(completedGamesRef), async () => {
-      const gameLengthQueryResponse = await getAggregateFromServer(query(completedGamesRef), { averageGameLength: average('gameLengthMilliseconds') });
+      const gameLengthQueryResponse = await getAggregateFromServer(query(completedGamesRef), { averageGameLength: average('GameLengthMilliseconds') });
       const { averageGameLength } = gameLengthQueryResponse.data();
       if (averageGameLength) {
-        setGameLength(Math.floor(averageGameLength / 1000));
+        setGameLength(Math.floor(averageGameLength / 1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
       }
     });
     return unsubscribe;
