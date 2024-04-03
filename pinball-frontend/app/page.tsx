@@ -5,7 +5,7 @@ import QRCodeLink from "@/app/components/qr-code-link";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <QRCodeLink url="https://pinball-frontend-ywmavwferq-wn.a.run.app" />
+      <QRCodeLink url="https://goo.gle/backlogged" />
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
         <Link
           href="/stats"

@@ -41,7 +41,7 @@ export default function Stats() {
 
   return (
     <main className="flex min-h-screen flex-col justify-between overflow-x-hidden">
-      <QRCodeLink url="https://pinball-frontend-ywmavwferq-wn.a.run.app/events"/>
+      <QRCodeLink url="https://goo.gle/backlogged-events"/>
       <div className="w-full">
         <div>
           <span className="font-bold">Machine ID:</span>
