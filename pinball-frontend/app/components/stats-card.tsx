@@ -34,7 +34,7 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
           gameId: data.GameId,
           avatar: data.Avatar,
           playerName: data.PlayerName,
-          value: mapper(querySnapshot.docs[0].data()[field]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+          value: mapper(data[field]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
         }
       });
       setTopTen(topTen);
