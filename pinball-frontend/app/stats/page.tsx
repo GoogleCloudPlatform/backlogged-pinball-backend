@@ -1,10 +1,12 @@
 'use client'
 
+import QRCodeLink from "../components/qr-code-link";
 import StatsCard from "../components/stats-card";
 
 export default function Stats() {
   return (
     <main className="grid grid-cols-6">
+      <QRCodeLink />
       <StatsCard
         title="Score"
         field="TotalScore"

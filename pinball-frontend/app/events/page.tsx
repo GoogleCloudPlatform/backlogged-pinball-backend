@@ -3,6 +3,7 @@
 import { limit, onSnapshot, query } from "firebase/firestore";
 import { liveGameEventsRef } from "../firebase";
 import { useEffect, useState } from "react";
+import QRCodeLink from "@/app/components/qr-code-link";
 
 type GameEvent = {
   messageId: string,
@@ -40,6 +41,7 @@ export default function Stats() {
 
   return (
     <main className="flex min-h-screen flex-col justify-between overflow-x-hidden">
+      <QRCodeLink />
       <div className="w-full">
         <div>
           <span className="font-bold">Machine ID:</span>
