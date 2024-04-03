@@ -19,12 +19,3 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export const completedGamesRef = collection(db, "CompletedGames");
 export const liveGameEventsRef = collection(db, "LiveGameEvents");
-
-const now = new Date();
-const twentyFourHoursAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000)); 
-const cutoffTimestamp = twentyFourHoursAgo.toUTCString();
-
-export const recentGamesQuery = query(
-    completedGamesRef, 
-    where("completedAt", ">", cutoffTimestamp),
- );

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { completedGamesRef, recentGamesQuery } from "../firebase";
+import { completedGamesRef } from "../firebase";
 import { average, getAggregateFromServer, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import Avatar from "@/app/components/avatar";
 
@@ -24,7 +24,7 @@ const defaultGames = [{
 const now = new Date();
 const yesterday = new Date(now.getTime() - (24 * 60 * 60 * 1000)); 
 
-const utcTimestamp = Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth(), yesterday.getUTCDate(), 
+const yesterdayUtcTimestamp = Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth(), yesterday.getUTCDate(), 
        yesterday.getUTCHours(), yesterday.getUTCMinutes(), yesterday.getUTCSeconds(), yesterday.getUTCMilliseconds());
 
 export default function StatsCard({ title, field, units, mapper = returnInput }: { title: string, field: string, units: string, mapper?: Function }) {
@@ -32,7 +32,7 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
   const topGame = topTen[0];
   const [averageValue, setAverageValue] = useState<string>('Loading...');
   useEffect(() => {
-    const maxValueQuery = query(completedGamesRef, orderBy(field, 'desc'), where('utcTimestamp', '>', utcTimestamp), limit(10))
+    const maxValueQuery = query(completedGamesRef, where('utcTimestamp', '>', yesterdayUtcTimestamp), orderBy(field, 'desc'), limit(10))
     const unsubscribe = onSnapshot(maxValueQuery, (querySnapshot) => {
       const topTen = querySnapshot.docs.map(gameStats => {
         const data = gameStats.data();
@@ -49,8 +49,8 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
   }, [field, mapper]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(query(recentGamesQuery), async () => {
-      const averageValueQueryResponse = await getAggregateFromServer(query(recentGamesQuery), { averageAverageValue: average(field) });
+    const unsubscribe = onSnapshot(query(completedGamesRef), async () => {
+      const averageValueQueryResponse = await getAggregateFromServer(query(completedGamesRef, where('utcTimestamp', '>', yesterdayUtcTimestamp)), { averageAverageValue: average(field) });
       const { averageAverageValue } = averageValueQueryResponse.data();
       if (averageAverageValue) {
         setAverageValue(Math.floor(mapper(averageAverageValue)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
