@@ -1,49 +1,73 @@
 'use client'
 
-import AverageGameLength from "../components/average-game-length";
-import AverageScore from "../components/average-score";
-import HighScore from "../components/high-score";
-import LongestGameLength from "../components/longest-game-length";
+import AverageCard from "../components/average-card";
+import MaxCard from "../components/max-card";
 
 export default function Stats() {
   return (
-    <main className="grid grid-cols-2 p-24">
-      <div className="flex justify-center border rounded overflow-hidden shadow-lg m-2 mx-auto  w-80">
-        <div className="px-6 py-4 text-center">
-          <div className="mb-2">High Score</div>
-          <div className="font-bold text-4xl">
-            <HighScore />
-          </div>
-          <div className="mb-2 -mt-2">points</div>
-        </div>
-      </div>
-      <div className="flex justify-center border rounded overflow-hidden shadow-lg m-2 mx-auto  w-80">
-        <div className="px-6 py-4 text-center">
-          <div className="mb-2">Longest Game</div>
-          <div className="font-bold text-4xl">
-            <LongestGameLength />
-          </div>
-          <div className="mb-2 -mt-2">seconds</div>
-        </div>
-      </div>
-      <div className="flex justify-center border rounded overflow-hidden shadow-lg m-2 mx-auto  w-80">
-        <div className="px-6 py-4 text-center">
-          <div className="mb-2">Average Score</div>
-          <div className="font-bold text-4xl">
-            <AverageScore />
-          </div>
-          <div className="mb-2 -mt-2">points</div>
-        </div>
-      </div>
-      <div className="flex justify-center border rounded overflow-hidden shadow-lg m-2 mx-auto  w-80">
-        <div className="px-6 py-4 text-center">
-          <div className="mb-2">Average Game Length</div>
-          <div className="font-bold text-4xl">
-            <AverageGameLength />
-          </div>
-          <div className="mb-2 -mt-2">seconds</div>
-        </div>
-      </div>
+    <main className="grid grid-cols-6">
+      <MaxCard
+        title="High Score"
+        field="TotalScore"
+        units="points"
+      />
+      <MaxCard
+        title="Longest Game"
+        field="GameLengthMilliseconds"
+        mapper={(milliseconds: number) => Math.floor(milliseconds / 1000)}
+        units="seconds"
+      />
+      <MaxCard
+        title="Most Loops"
+        field="LoopsHit"
+        units="loops"
+      />
+      <MaxCard
+        title="Most Targets"
+        field="TargetsHit"
+        units="hit"
+      />
+      <MaxCard
+        title="Most Bugs"
+        field="BugsSquashed"
+        units="squashed"
+      />
+      <MaxCard
+        title="Most PRs"
+        field="PRsMerged"
+        units="merged"
+      />
+      <AverageCard
+        title="Average Score"
+        field="TotalScore"
+        units="points"
+      />
+      <AverageCard
+        title="Average Game Length"
+        field="GameLengthMilliseconds"
+        mapper={(milliseconds: number) => Math.floor(milliseconds / 1000)}
+        units="seconds"
+      />
+      <AverageCard
+        title="Average Loops"
+        field="LoopsHit"
+        units="loops"
+      />
+      <AverageCard
+        title="Average Targets"
+        field="TargetsHit"
+        units="hit"
+      />
+      <AverageCard
+        title="Average Bugs"
+        field="BugsSquashed"
+        units="squashed"
+      />
+      <AverageCard
+        title="Average PRs"
+        field="PRsMerged"
+        units="merged"
+      />
     </main>
   );
 }

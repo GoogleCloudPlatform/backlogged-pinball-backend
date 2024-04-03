@@ -3,7 +3,7 @@
 import { memo } from "react";
 import Image from 'next/image'
 
-export default memo(function AvatarCard({ avatar = 'beaver', playerName = 'Loading...' }: { avatar?: string, playerName?: string }) {
+export default memo(function Avatar({ avatar = 'beaver', playerName = 'Loading...' }: { avatar?: string, playerName?: string }) {
   return <>
     <Image
       src={`/avatars/${avatar}.png`}
