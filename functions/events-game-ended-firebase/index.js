@@ -26,7 +26,11 @@ functions.cloudEvent('events-game-ended-firebase', async cloudEvent => {
     const base64Data = messageData.data;
     const decodedData = base64.decode(base64Data);
     const jsonData = JSON.parse(decodedData);
-   const mergedData = { ...jsonData, ...messageData.attributes };
+    const mergedData = { 
+      ...jsonData,
+      ...messageData.attributes,
+      completedAt: new Date().toUTCString()
+    };
 
     console.log(mergedData);
     // Send to Firestore

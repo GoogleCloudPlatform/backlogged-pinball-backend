@@ -23,5 +23,5 @@ gcloud functions deploy events-game-end-firebase \
 --source=. \
 --entry-point=events-game-ended-firebase \
 --trigger-event=providers/cloud.pubsub/eventTypes/topic.publish \
---trigger-resource=pinball-events \
+--trigger-resource=pinball-events 
 ```

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { completedGamesRef } from "../firebase";
+import { completedGamesRef, recentGamesQuery } from "../firebase";
 import { average, getAggregateFromServer, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import Avatar from "@/app/components/avatar";
 
@@ -26,7 +26,7 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
   const topGame = topTen[0];
   const [averageValue, setAverageValue] = useState<string>('Loading...');
   useEffect(() => {
-    const maxValueQuery = query(completedGamesRef, orderBy(field, 'desc'), limit(10))
+    const maxValueQuery = query(recentGamesQuery, orderBy(field, 'desc'), limit(10))
     const unsubscribe = onSnapshot(maxValueQuery, (querySnapshot) => {
       const topTen = querySnapshot.docs.map(gameStats => {
         const data = gameStats.data();
@@ -43,8 +43,8 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
   }, [field, mapper]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(query(completedGamesRef), async () => {
-      const averageValueQueryResponse = await getAggregateFromServer(query(completedGamesRef), { averageAverageValue: average(field) });
+    const unsubscribe = onSnapshot(query(recentGamesQuery), async () => {
+      const averageValueQueryResponse = await getAggregateFromServer(query(recentGamesQuery), { averageAverageValue: average(field) });
       const { averageAverageValue } = averageValueQueryResponse.data();
       if (averageAverageValue) {
         setAverageValue(Math.floor(mapper(averageAverageValue)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
