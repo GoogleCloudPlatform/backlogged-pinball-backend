@@ -3,12 +3,12 @@
 import { memo } from "react";
 import Image from 'next/image'
 
-export default memo(function Avatar({ avatar, size }: { avatar: string, size: number }) {
+export default memo(function Avatar({ avatar }: { avatar: string }) {
   return <>
     <Image
       src={`/avatars/${avatar}.png`}
-      width={size}
-      height={size}
+      width={50}
+      height={50}
       alt="animal avatar"
     />
   </>;

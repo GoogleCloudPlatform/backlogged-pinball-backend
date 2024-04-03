@@ -60,7 +60,7 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
           <div className="mb-2 font-bold">Max<br />{title}</div>
           <div className="font-bold text-4xl">
             <center>
-              <Avatar avatar={topGame.avatar} size={50} />
+              <Avatar avatar={topGame.avatar} />
               <div className="text-lg">
                 {topGame.playerName}
               </div>
@@ -79,7 +79,7 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
           {topTen.map((game => (<div key={game.gameId}>
             <hr className="m-2" />
             <div className="flex justify-between">
-              <Avatar avatar={game.avatar} size={50} />
+              <Avatar avatar={game.avatar} />
               <div className="text-right">
                 <div>{game.playerName}</div>
                 <div>{game.value}</div>
