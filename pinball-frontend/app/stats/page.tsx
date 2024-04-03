@@ -6,7 +6,7 @@ import StatsCard from "../components/stats-card";
 export default function Stats() {
   return (
     <main className="grid grid-cols-6">
-      <QRCodeLink />
+      <QRCodeLink url="https://pinball-frontend-ywmavwferq-wn.a.run.app/stats" />
       <StatsCard
         title="Score"
         field="TotalScore"
