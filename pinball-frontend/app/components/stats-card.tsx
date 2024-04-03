@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { completedGamesRef, recentGamesQuery } from "../firebase";
-import { average, getAggregateFromServer, limit, onSnapshot, orderBy, query } from "firebase/firestore";
+import { average, getAggregateFromServer, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import Avatar from "@/app/components/avatar";
 
 const returnInput = (value: number) => value;
@@ -21,12 +21,18 @@ const defaultGames = [{
   value: 'Loading...',
 }];
 
+const now = new Date();
+const yesterday = new Date(now.getTime() - (24 * 60 * 60 * 1000)); 
+
+const utcTimestamp = Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth(), yesterday.getUTCDate(), 
+       yesterday.getUTCHours(), yesterday.getUTCMinutes(), yesterday.getUTCSeconds(), yesterday.getUTCMilliseconds());
+
 export default function StatsCard({ title, field, units, mapper = returnInput }: { title: string, field: string, units: string, mapper?: Function }) {
   const [topTen, setTopTen] = useState<Game[]>(defaultGames);
   const topGame = topTen[0];
   const [averageValue, setAverageValue] = useState<string>('Loading...');
   useEffect(() => {
-    const maxValueQuery = query(recentGamesQuery, orderBy(field, 'desc'), limit(10))
+    const maxValueQuery = query(completedGamesRef, orderBy(field, 'desc'), where('utcTimestamp', '>', utcTimestamp), limit(10))
     const unsubscribe = onSnapshot(maxValueQuery, (querySnapshot) => {
       const topTen = querySnapshot.docs.map(gameStats => {
         const data = gameStats.data();

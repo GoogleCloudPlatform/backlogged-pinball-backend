@@ -27,6 +27,4 @@ const cutoffTimestamp = twentyFourHoursAgo.toUTCString();
 export const recentGamesQuery = query(
     completedGamesRef, 
     where("completedAt", ">", cutoffTimestamp),
-    orderBy("completedAt", "desc"), // Assuming you want newest first
-    limit(100)
  );

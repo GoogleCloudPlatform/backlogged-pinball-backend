@@ -26,10 +26,15 @@ functions.cloudEvent('events-game-ended-firebase', async cloudEvent => {
     const base64Data = messageData.data;
     const decodedData = base64.decode(base64Data);
     const jsonData = JSON.parse(decodedData);
+
+    const now = new Date;
+    const utcTimestamp = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() , 
+          now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds())
+
     const mergedData = { 
       ...jsonData,
       ...messageData.attributes,
-      completedAt: new Date().toUTCString()
+      utcTimestamp: utcTimestamp
     };
 
     console.log(mergedData);
