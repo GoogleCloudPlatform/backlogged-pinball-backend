@@ -49,7 +49,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
     return {...rawGame, place, higher, value }
   });
   const higherGames = topHundredGames.filter(game => game.higher);
-  const lowerGames = topHundredGames.filter(game => !game.higher);
+  const lowerGames = topHundredGames.filter(game => !game.higher && game.playerName !== currentGame.playerName);
 
   useEffect(() => {
     // limit to 98 to keep everything in 2 digits
