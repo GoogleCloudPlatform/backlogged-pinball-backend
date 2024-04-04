@@ -1,6 +1,6 @@
 'use client'
 
-import { limit, onSnapshot, query } from "firebase/firestore";
+import { limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { liveGameEventsRef } from "../firebase";
 import { useEffect, useState } from "react";
 import QRCodeLink from "@/app/components/qr-code-link";
@@ -10,18 +10,31 @@ import { getNowTimestamp } from "../utils/timestamp";
 type GameEvent = {
   messageId: string,
   pinballEventType: string,
-  data: string,
+  dataString: string,
   gameLengthMilliseconds: number,
   utcTimestamp: number,
+  data: any,
 }
 
 export default function Stats() {
   const [gameEvents, setGameEvents] = useState<GameEvent[]>([]);
-  const [gameStartTimestamp, setGameStartTimestamp] = useState(0);
+  const [gameStartEvent, setGameStartEvent] = useState<GameEvent | null>(null);
+  const gameStartTimestamp = gameStartEvent?.utcTimestamp || getNowTimestamp();
   const [timeElapsedMillis, setTimeElapsedMillis] = useState(0);
   const [machineId, setMachineId] = useState('');
   const [gameId, setGameId] = useState('');
-  const [bugCount, setBugCount] = useState('');
+  const lastPrEvent = gameEvents.find((gameEvent) => gameEvent?.data?.BacklogName === 'PR');
+  const prCount = lastPrEvent ? lastPrEvent.data.BacklogCount : gameStartEvent ? gameStartEvent.data.InitialPrCount : 0;
+  const lastBugEvent = gameEvents.find((gameEvent) => gameEvent?.data?.BacklogName === 'Bug');
+  const bugCount = lastBugEvent ? lastBugEvent.data.BacklogCount : gameStartEvent ? gameStartEvent.data.InitialBugCount : 0;
+  const lastBallDrainEvent = gameEvents.find((gameEvent) => gameEvent.pinballEventType === 'BallDrained');
+  const ballDrainCount = lastBallDrainEvent ? lastBallDrainEvent.data.TotalDrains : 0;
+  const lastBallLaunchEvent = gameEvents.find((gameEvent) => gameEvent.pinballEventType === 'BallLaunched');
+  const ballLaunchCount = lastBallLaunchEvent ? lastBallLaunchEvent.data.LaunchedBallCount : 0;
+  const lastLoopHitEvent = gameEvents.find((gameEvent) => gameEvent.pinballEventType === 'LoopHit');
+  const loopHitCount = lastLoopHitEvent ? lastLoopHitEvent.data.TotalLoops : 0;
+  const lastTargetHitEvent = gameEvents.find((gameEvent) => gameEvent.pinballEventType === 'TargetHit');
+  const targetHitCount = lastTargetHitEvent ? lastTargetHitEvent.data.TotalLoops : 0;
   const [currentGame, setCurrentGame] = useState({
     gameId: 'CURRENT_GAME',
     playerName: 'Current Game',
@@ -46,12 +59,12 @@ export default function Stats() {
   }, [gameEvents, gameStartTimestamp, timeElapsedMillis]);
 
   useEffect(() => {
-    const liveEventsQuery = query(liveGameEventsRef, limit(100));
+    const liveEventsQuery = query(liveGameEventsRef, orderBy('publishTime', 'desc'), limit(1000));
     const unsubscribe = onSnapshot(liveEventsQuery, (querySnapshot) => {
       const gameEvents = querySnapshot.docs.map((doc) => {
         const { GameId, ...data } = doc.data().data; // remove GameId from data
         // sorts the keys so they are always printed in the same order
-        const sortedData = JSON.stringify(data, Object.keys(data).sort(), 2);
+        const dataString = JSON.stringify(data, Object.keys(data).sort(), 2);
         const pinballEventType = doc.data().PinballEventType;
         const utcTimestamp = doc.data().utcTimestamp;
         if (doc.data().MachineId) {
@@ -60,29 +73,27 @@ export default function Stats() {
         if (doc.data().GameId) {
           setGameId(doc.data().GameId);
         }
-        if (data.InitialBugCount) {
-          setBugCount(data.InitialBugCount);
-        }
+        const gameEvent = {
+          messageId: doc.data().messageId,
+          publishTime: doc.data().publishTime,
+          pinballEventType,
+          utcTimestamp,
+          gameLengthMilliseconds: data.GameLengthMilliseconds,
+          dataString,
+          data,
+        };
         if (pinballEventType === 'GameStarted') {
           console.log({docData: doc.data()})
-          setGameStartTimestamp(utcTimestamp);
+          setGameStartEvent(gameEvent)
           setCurrentGame({
             ...currentGame,
             playerName: data.PlayerName,
             avatar: data.Avatar,
           });
         }
-        return ({
-          messageId: doc.data().messageId,
-          publishTime: doc.data().publishTime,
-          pinballEventType,
-          utcTimestamp,
-          gameLengthMilliseconds: data.GameLengthMilliseconds,
-          data: sortedData,
-        })
+        return gameEvent;
       });
-      const sortedGameEvents = gameEvents.sort((a, b) => a.publishTime < b.publishTime ? 1 : -1)
-      setGameEvents(sortedGameEvents);
+      setGameEvents(gameEvents);
     });
     return unsubscribe;
   }, []);
@@ -101,8 +112,28 @@ export default function Stats() {
             <span className="font-mono">{' '}{gameId}</span>
           </div>
           <div>
+            <span className="font-bold">PR Count:</span>
+            <span className="font-mono">{' '}{prCount}</span>
+          </div>
+          <div>
             <span className="font-bold">Bug Count:</span>
             <span className="font-mono">{' '}{bugCount}</span>
+          </div>
+          <div>
+            <span className="font-bold">Ball Drain Count:</span>
+            <span className="font-mono">{' '}{ballDrainCount}</span>
+          </div>
+          <div>
+            <span className="font-bold">Launched Ball Count:</span>
+            <span className="font-mono">{' '}{ballLaunchCount}</span>
+          </div>
+          <div>
+            <span className="font-bold">Loop Hit Count:</span>
+            <span className="font-mono">{' '}{loopHitCount}</span>
+          </div>
+          <div>
+            <span className="font-bold">Target Hit Count:</span>
+            <span className="font-mono">{' '}{targetHitCount}</span>
           </div>
           <table className="text-left font-thin m-2">
             <thead>
@@ -129,7 +160,7 @@ export default function Stats() {
                   </td>
                   <td scope="row" className="px-6 py-4 whitespace-nowrap font-mono text-xl">
                     <pre>
-                      {gameEvent.data}
+                      {gameEvent.dataString}
                     </pre>
                   </td>
                 </tr>
