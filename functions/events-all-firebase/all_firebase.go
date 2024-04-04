@@ -22,8 +22,10 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"time"
 
 	"cloud.google.com/go/firestore"
+	firebase "firebase.google.com/go/v4"
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/cloudevents/sdk-go/v2/event"
 	"google.golang.org/api/iterator"
@@ -97,6 +99,12 @@ func allFirebaseFunction(ctx context.Context, e event.Event) error {
 		deleteCollection(&buff, ctx, *client, "LiveGameEvents", 40)
 		log.Print(buff)
 	}
+
+	currentTimeUTC := time.Now().UTC()
+	timestampUnix := currentTimeUTC.UnixMilli()
+
+	// Add the utcTimestamp field to the message data
+	message["utcTimestamp"] = timestampUnix
 
 	publishTime, ok := message["publishTime"].(string)
 	if !ok {
