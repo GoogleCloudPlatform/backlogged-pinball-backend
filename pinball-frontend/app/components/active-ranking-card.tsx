@@ -68,7 +68,8 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
       setTopHundredRawGames(topHundredRawGames);
     });
     return unsubscribe;
-  }, [currentGame.playerName, field, mapper]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="-z-10">
