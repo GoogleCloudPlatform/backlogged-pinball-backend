@@ -9,8 +9,6 @@ import { getNowTimestamp } from "../utils/timestamp";
 
 type GameEvent = {
   messageId: string,
-  gameId: string,
-  machineId: string,
   pinballEventType: string,
   data: string,
   gameLengthMilliseconds: number,
@@ -21,6 +19,8 @@ export default function Stats() {
   const [gameEvents, setGameEvents] = useState<GameEvent[]>([]);
   const [gameStartTimestamp, setGameStartTimestamp] = useState(0);
   const [timeElapsedMillis, setTimeElapsedMillis] = useState(0);
+  const [machineId, setMachineId] = useState('');
+  const [gameId, setGameId] = useState('');
   const [currentGame, setCurrentGame] = useState({
     gameId: 'CURRENT_GAME',
     playerName: 'Current Game',
@@ -53,7 +53,14 @@ export default function Stats() {
         const sortedData = JSON.stringify(data, Object.keys(data).sort(), 2);
         const pinballEventType = doc.data().PinballEventType;
         const utcTimestamp = doc.data().utcTimestamp;
+        if (doc.data().MachineId) {
+          setMachineId(doc.data().MachineId);
+        }
+        if (doc.data().GameId) {
+          setGameId(doc.data().GameId);
+        }
         if (pinballEventType === 'GameStarted') {
+          console.log({docData: doc.data()})
           setGameStartTimestamp(utcTimestamp);
           setCurrentGame({
             ...currentGame,
@@ -64,8 +71,6 @@ export default function Stats() {
         return ({
           messageId: doc.data().messageId,
           publishTime: doc.data().publishTime,
-          gameId: doc.data().GameId,
-          machineId: doc.data().MachineId,
           pinballEventType,
           utcTimestamp,
           gameLengthMilliseconds: data.GameLengthMilliseconds,
@@ -78,8 +83,6 @@ export default function Stats() {
     return unsubscribe;
   }, []);
 
-  const firstEvent = gameEvents.slice(0, 1)[0] || { machineId: '', gameId: '' };
-
   return (
     <main className="flex min-h-screen flex-col justify-between overflow-x-hidden">
       <QRCodeLink url="https://goo.gle/backlogged-events" />
@@ -87,11 +90,11 @@ export default function Stats() {
         <div className="w-full">
           <div>
             <span className="font-bold">Machine ID:</span>
-            <span className="font-mono">{' '}{firstEvent.machineId}</span>
+            <span className="font-mono">{' '}{machineId}</span>
           </div>
           <div>
             <span className="font-bold">Game ID:</span>
-            <span className="font-mono">{' '}{firstEvent.gameId}</span>
+            <span className="font-mono">{' '}{gameId}</span>
           </div>
           <table className="text-left font-thin m-2">
             <thead>

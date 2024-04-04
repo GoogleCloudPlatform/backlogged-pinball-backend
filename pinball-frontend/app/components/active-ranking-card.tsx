@@ -47,7 +47,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
     const place = twoDigitPad(numericPlace);
     const value = mapper(rawGame.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     return { ...rawGame, place, higher, value }
-  });
+  }).filter((game) => game.playerName !== currentGame.playerName);
   const higherGames = topHundredGames.filter(game => game.higher);
   const currentPlayerPlace = higherGames.length + 1;
 
@@ -64,7 +64,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
           playerName: data.PlayerName,
           value: data[field],
         };
-      }).filter((game) => game.playerName !== currentGame.playerName);
+      });
       setTopHundredRawGames(topHundredRawGames);
     });
     return unsubscribe;
