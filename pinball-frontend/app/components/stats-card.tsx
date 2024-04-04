@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { completedGamesRef } from "../firebase";
 import { average, getAggregateFromServer, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import Avatar from "@/app/components/avatar";
+import { getYesterdayTimestamp } from "@/app/utils/timestamp";
 
 const returnInput = (value: number) => value;
 
@@ -21,11 +22,7 @@ const defaultGames = [{
   value: 'Loading...',
 }];
 
-const now = new Date();
-const yesterday = new Date(now.getTime() - (24 * 60 * 60 * 1000));
-
-const yesterdayUtcTimestamp = Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth(), yesterday.getUTCDate(),
-  yesterday.getUTCHours(), yesterday.getUTCMinutes(), yesterday.getUTCSeconds(), yesterday.getUTCMilliseconds());
+const yesterdayUtcTimestamp = getYesterdayTimestamp();
 
 export default function StatsCard({ title, field, units, mapper = returnInput }: { title: string, field: string, units: string, mapper?: Function }) {
   const [topTen, setTopTen] = useState<Game[]>(defaultGames);
