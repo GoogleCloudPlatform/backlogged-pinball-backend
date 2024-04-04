@@ -46,10 +46,10 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
     const numericPlace = higher ? index + 1 : index + 2;
     const place = twoDigitPad(numericPlace);
     const value = mapper(rawGame.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    return {...rawGame, place, higher, value }
+    return { ...rawGame, place, higher, value }
   });
   const higherGames = topHundredGames.filter(game => game.higher);
-  const lowerGames = topHundredGames.filter(game => !game.higher && game.playerName !== currentGame.playerName);
+  const currentPlayerPlace = higherGames.length + 1;
 
   useEffect(() => {
     // limit to 98 to keep everything in 2 digits
@@ -64,43 +64,46 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
           playerName: data.PlayerName,
           value: data[field],
         };
-      });
+      }).filter((game) => game.playerName !== currentGame.playerName);
       setTopHundredRawGames(topHundredRawGames);
     });
     return unsubscribe;
-  }, [field, mapper]);
+  }, [currentGame.playerName, field, mapper]);
 
   return (
-    <div className="">
-      <div className="my-4">
-        <center className="text-xl">
+    <div className="-z-10">
+      <div className="">
+        {/* <center className="text-xl">
           {title}
-        </center>
-        <div className="px-6 py-4">
-          {higherGames.slice(-5).map((game => (<div key={game.gameId}>
-            <div className="flex justify-start w-72">
-              <span className="font-mono">
-                {game.place}
-              </span>
-              <div className="flex justify-between w-full">
-                <Avatar avatar={game.avatar} />
-                <div className="text-right">
-                  <div>{game.playerName}</div>
-                  <div className="font-mono">{game.value}  {units}</div>
+        </center> */}
+        <div className="absolute right-8 px-6 bg-white w-full h-full" style={{ height: `${(Math.min(6, currentPlayerPlace)) * 70 - 15}px` }}>
+          <div className="absolute right-0 overflow-y-clip" style={{ height: `${(Math.min(5, higherGames.length)) * 70}px` }}>
+            {topHundredGames.map((game, index) => (
+              <div key={game.gameId} className="absolute right-0 transition-all duration-1000" style={{ top: `${(index - Math.max(0, higherGames.length - 5)) * 70}px` }}>
+                <div className="flex justify-start w-72">
+                  <span className="font-mono">
+                    {game.place}
+                  </span>
+                  <div className="flex justify-between w-full">
+                    <Avatar avatar={game.avatar} />
+                    <div className="text-right">
+                      <div>{game.playerName}</div>
+                      <div className="font-mono">{game.value}  {units}</div>
+                    </div>
+                  </div>
                 </div>
+                <hr className="m-2" />
               </div>
-            </div>
-            <hr className="m-2" />
-          </div>)))}
-          <div className="flex -ml-[120px]">
-            <div className="text-right bg-[#FBBC04]">
+            ))}
+          </div>
+          <div className="absolute right-0 transition-all duration-1000 -py-2" style={{ top: `${Math.min(higherGames.length, 5) * 70}px` }}>
+            <div className="absolute text-right bg-[#FBBC04] -ml-32">
               {'Current Player'}
             </div>
-            <hr className="m-2" />
             <div className="flex justify-start w-72">
               <span className="font-mono">
                 {higherGames.length < 9 && '0'}
-                {higherGames.length + 1}
+                {currentPlayerPlace}
               </span>
               <div className="flex justify-between w-full">
                 <Avatar avatar={currentGame.avatar} />
@@ -111,21 +114,26 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
               </div>
             </div>
           </div>
-          {lowerGames.map((game => (<div key={game.gameId}>
-            <hr className="m-2" />
-            <div className="flex justify-start w-72">
-              <span className="font-mono">
-                {game.place}
-              </span>
-              <div className="flex justify-between w-full">
-                <Avatar avatar={game.avatar} />
-                <div className="text-right">
-                  <div>{game.playerName}</div>
-                  <div className="font-mono">{game.value} {units}</div>
+          <div className="absolute right-0 -z-50">
+           {/* style={{ height: `${(Math.min(5, higherGames.length)) * 70}px` }}> */}
+            {topHundredGames.map((game, index) => (
+              <div key={game.gameId} className="absolute right-0 transition-all duration-1000" style={{ top: `${(index - Math.max(1, higherGames.length - 6)) * 70 - 15}px` }}>
+                <hr className="m-2" />
+                <div className="flex justify-start w-72">
+                  <span className="font-mono">
+                    {game.place}
+                  </span>
+                  <div className="flex justify-between w-full">
+                    <Avatar avatar={game.avatar} />
+                    <div className="text-right">
+                      <div>{game.playerName}</div>
+                      <div className="font-mono">{game.value}  {units}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>)))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
