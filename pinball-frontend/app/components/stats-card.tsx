@@ -22,10 +22,10 @@ const defaultGames = [{
 }];
 
 const now = new Date();
-const yesterday = new Date(now.getTime() - (24 * 60 * 60 * 1000)); 
+const yesterday = new Date(now.getTime() - (24 * 60 * 60 * 1000));
 
-const yesterdayUtcTimestamp = Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth(), yesterday.getUTCDate(), 
-       yesterday.getUTCHours(), yesterday.getUTCMinutes(), yesterday.getUTCSeconds(), yesterday.getUTCMilliseconds());
+const yesterdayUtcTimestamp = Date.UTC(yesterday.getUTCFullYear(), yesterday.getUTCMonth(), yesterday.getUTCDate(),
+  yesterday.getUTCHours(), yesterday.getUTCMinutes(), yesterday.getUTCSeconds(), yesterday.getUTCMilliseconds());
 
 export default function StatsCard({ title, field, units, mapper = returnInput }: { title: string, field: string, units: string, mapper?: Function }) {
   const [topTen, setTopTen] = useState<Game[]>(defaultGames);
@@ -70,13 +70,15 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
               <div className="text-lg">
                 {topGame.playerName}
               </div>
-              {topGame.value}
+              <span className="font-mono">
+                {topGame.value}
+              </span>
             </center>
           </div>
           <div className="mb-2 -mt-2">{units}</div>
           <hr className="m-8" />
           <div className="mb-2 font-bold">Average<br />{title}</div>
-          <div className="font-bold text-4xl">
+          <div className="font-bold text-4xl font-mono">
             {averageValue}
           </div>
           <div className="mb-2 -mt-2">{units}</div>
@@ -88,7 +90,7 @@ export default function StatsCard({ title, field, units, mapper = returnInput }:
               <Avatar avatar={game.avatar} />
               <div className="text-right">
                 <div>{game.playerName}</div>
-                <div>{game.value}</div>
+                <div className="font-mono">{game.value}</div>
               </div>
             </div>
           </div>)))}

@@ -67,14 +67,41 @@ export default function Home() {
           </p>
         </Link>
       </div>
-      <div>
+      <center className="fixed -z-10 top-0 w-screen h-screen overflow-clip">
+        <div className="flex justify-center">
+          <Image
+            className="fixed -z-40 top-48 mx-auto motion-safe:animate-wiggle"
+            src="/google-cloud-logo.png"
+            width={500}
+            height={500}
+            alt="Google Cloud Logo"
+          />
+        </div>
+        <div className="flex justify-center">
+          <div className="fixed -z-40 top-60 mx-auto motion-safe:animate-wiggle">
+            Backlogged Pinball
+          </div>
+        </div>
         <Image
+          className="fixed -z-30 top-80 motion-safe:animate-jump"
           src="/backlogged-beaver.png"
           width={500}
           height={500}
           alt="Cartoon beaver holding a keyboard"
         />
-      </div>
+        <Image
+          className="fixed -z-50 top-80 motion-safe:animate-wiggle"
+          src="/backlogged-background.png"
+          sizes="100vw"
+          style={{
+            width: '100%',
+            height: 'auto',
+          }}
+          width={500}
+          height={300}
+          alt="Logs floating in the water"
+        />
+      </center>
     </main>
   );
 }
