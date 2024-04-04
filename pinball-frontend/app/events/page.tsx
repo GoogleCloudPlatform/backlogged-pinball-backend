@@ -24,7 +24,7 @@ export default function Stats() {
   const [machineId, setMachineId] = useState('');
   const [gameId, setGameId] = useState('');
   const lastPrEvent = gameEvents.find((gameEvent) => gameEvent?.data?.BacklogName === 'PR');
-  const prCount = lastPrEvent ? lastPrEvent.data.BacklogCount : gameStartEvent ? gameStartEvent.data.InitialPrCount : 0;
+  const prCount = lastPrEvent ? lastPrEvent.data.BacklogCount : gameStartEvent ? gameStartEvent.data.InitialPRCount : 0;
   const lastBugEvent = gameEvents.find((gameEvent) => gameEvent?.data?.BacklogName === 'Bug');
   const bugCount = lastBugEvent ? lastBugEvent.data.BacklogCount : gameStartEvent ? gameStartEvent.data.InitialBugCount : 0;
   const lastBallDrainEvent = gameEvents.find((gameEvent) => gameEvent.pinballEventType === 'BallDrained');
