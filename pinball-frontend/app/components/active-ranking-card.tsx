@@ -82,7 +82,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
               <div key={game.gameId} className="absolute right-0 transition-all duration-1000" style={{ top: `${(index - Math.max(0, higherGames.length - 5)) * 70}px` }}>
                 <div className="flex justify-start w-72">
                   <span className="font-mono">
-                    {game.place}
+                    {Number(game.place) < currentPlayerPlace ? game.place : twoDigitPad(currentPlayerPlace)}
                   </span>
                   <div className="flex justify-between w-full">
                     <Avatar avatar={game.avatar} />
@@ -96,7 +96,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
               </div>
             ))}
           </div>
-          <div className="absolute right-0 transition-all duration-1000 -py-2" style={{ top: `${Math.min(higherGames.length, 5) * 70}px` }}>
+          <div className="absolute right-0 transition-all duration-1000 -py-2 bg-white z-10" style={{ top: `${Math.min(higherGames.length, 5) * 70}px` }}>
             <div className="absolute text-right bg-[#FBBC04] -ml-32">
               {'Current Player'}
             </div>
@@ -115,9 +115,8 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
             </div>
           </div>
           <div className="absolute right-0 -z-50">
-           {/* style={{ height: `${(Math.min(5, higherGames.length)) * 70}px` }}> */}
             {topHundredGames.map((game, index) => (
-              <div key={game.gameId} className="absolute right-0 transition-all duration-1000" style={{ top: `${(index - Math.max(1, higherGames.length - 6)) * 70 - 15}px` }}>
+              <div key={game.gameId} className="absolute right-0 transition-all duration-1000 bg-white" style={{ top: `${(index - Math.max(-1, higherGames.length - 6)) * 70 - 15}px` }}>
                 <hr className="m-2" />
                 <div className="flex justify-start w-72">
                   <span className="font-mono">
