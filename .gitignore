@@ -52,3 +52,4 @@ crash.*.log
 # Language Specific
 # ...
 functions/events-game-ended-firebase/node_modules/
+sample-code/javascript/node_modules/
