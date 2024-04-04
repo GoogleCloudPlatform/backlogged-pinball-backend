@@ -21,6 +21,7 @@ type Game = {
   playerName: string,
   value: number,
   place: string,
+  higher: boolean,
 }
 
 const defaultGames = [{
@@ -29,6 +30,7 @@ const defaultGames = [{
   playerName: 'Loading...',
   value: 0,
   place: '99',
+  higher: false,
 }];
 
 const yesterdayUtcTimestamp = getYesterdayTimestamp();
@@ -38,39 +40,35 @@ const twoDigitPad = (number: number) => {
 }
 
 export default function ActiveRankingCard({ title, field, units, mapper = returnInput, currentGame }: { title: string, field: string, units: string, mapper?: Function, currentGame: RawGame }) {
-  const [higherGames, setHigherGames] = useState<Game[]>(defaultGames);
-  const [lowerGames, setLowerGames] = useState<Game[]>(defaultGames);
+  const [topHundredRawGames, setTopHundredRawGames] = useState<RawGame[]>(defaultGames);
+  const topHundredGames: Game[] = topHundredRawGames.map((rawGame, index) => {
+    const higher = rawGame.value > currentGame.value;
+    const numericPlace = higher ? index + 1 : index + 2;
+    const place = twoDigitPad(numericPlace);
+    const value = mapper(rawGame.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return {...rawGame, place, higher, value }
+  });
+  const higherGames = topHundredGames.filter(game => game.higher);
+  const lowerGames = topHundredGames.filter(game => !game.higher);
 
   useEffect(() => {
     // limit to 98 to keep everything in 2 digits
     // 98 + 1 (for the player) is 99
     const maxValueQuery = query(completedGamesRef, where('utcTimestamp', '>', yesterdayUtcTimestamp), orderBy(field, 'desc'), limit(98))
     const unsubscribe = onSnapshot(maxValueQuery, (querySnapshot) => {
-      const higherGames: Game[] = [];
-      const lowerGames: Game[] = [];
-      querySnapshot.docs.forEach(gameStats => {
+      const topHundredRawGames: RawGame[] = querySnapshot.docs.map(gameStats => {
         const data = gameStats.data();
-        const game = {
+        return {
           gameId: data.GameId,
           avatar: data.Avatar,
           playerName: data.PlayerName,
-          value: mapper(data[field]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+          value: data[field],
         };
-        if (data[field] > currentGame.value) {
-          const place = twoDigitPad(higherGames.length + 1);
-          higherGames.push({ ...game, place });
-        } else if (game.playerName !== currentGame.playerName) {
-          // when the game ends, they will be added to the list without this check ^
-          // don't push the player on after they have completed their game
-          const place = twoDigitPad(higherGames.length + lowerGames.length + 2);
-          lowerGames.push({ ...game, place });
-        }
       });
-      setHigherGames(higherGames);
-      setLowerGames(lowerGames);
+      setTopHundredRawGames(topHundredRawGames);
     });
     return unsubscribe;
-  }, [currentGame.playerName, currentGame.value, field, mapper]);
+  }, [field, mapper]);
 
   return (
     <div className="">
