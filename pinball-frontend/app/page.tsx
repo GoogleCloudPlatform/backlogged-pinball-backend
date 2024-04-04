@@ -90,7 +90,7 @@ export default function Home() {
           alt="Cartoon beaver holding a keyboard"
         />
         <Image
-          className="fixed -z-50 top-80 motion-safe:animate-wiggle"
+          className="fixed -z-50 top-80"
           src="/backlogged-background.png"
           sizes="100vw"
           style={{

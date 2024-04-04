@@ -41,13 +41,13 @@ const twoDigitPad = (number: number) => {
 
 export default function ActiveRankingCard({ title, field, units, mapper = returnInput, currentGame }: { title: string, field: string, units: string, mapper?: Function, currentGame: RawGame }) {
   const [topHundredRawGames, setTopHundredRawGames] = useState<RawGame[]>(defaultGames);
-  const topHundredGames: Game[] = topHundredRawGames.map((rawGame, index) => {
+  const topHundredGames: Game[] = topHundredRawGames.filter((game) => game.playerName !== currentGame.playerName).map((rawGame, index) => {
     const higher = rawGame.value > currentGame.value;
     const numericPlace = higher ? index + 1 : index + 2;
     const place = twoDigitPad(numericPlace);
     const value = mapper(rawGame.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     return { ...rawGame, place, higher, value }
-  }).filter((game) => game.playerName !== currentGame.playerName);
+  });
   const higherGames = topHundredGames.filter(game => game.higher);
   const currentPlayerPlace = higherGames.length + 1;
 
@@ -77,7 +77,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
         {/* <center className="text-xl">
           {title}
         </center> */}
-        <div className="absolute right-8 px-6 bg-white w-full h-full" style={{ height: `${(Math.min(6, currentPlayerPlace)) * 70 - 15}px` }}>
+        <div className="absolute right-8 px-6 bg-white w-full h-full transition-all" style={{ height: `${(Math.min(6, currentPlayerPlace)) * 70 - 15}px` }}>
           <div className="absolute right-0 overflow-y-clip" style={{ height: `${(Math.min(5, higherGames.length)) * 70}px` }}>
             {topHundredGames.map((game, index) => (
               <div key={game.gameId} className="absolute right-0 transition-all duration-1000" style={{ top: `${(index - Math.max(0, higherGames.length - 5)) * 70}px` }}>

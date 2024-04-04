@@ -21,6 +21,7 @@ export default function Stats() {
   const [timeElapsedMillis, setTimeElapsedMillis] = useState(0);
   const [machineId, setMachineId] = useState('');
   const [gameId, setGameId] = useState('');
+  const [bugCount, setBugCount] = useState('');
   const [currentGame, setCurrentGame] = useState({
     gameId: 'CURRENT_GAME',
     playerName: 'Current Game',
@@ -59,6 +60,9 @@ export default function Stats() {
         if (doc.data().GameId) {
           setGameId(doc.data().GameId);
         }
+        if (data.InitialBugCount) {
+          setBugCount(data.InitialBugCount);
+        }
         if (pinballEventType === 'GameStarted') {
           console.log({docData: doc.data()})
           setGameStartTimestamp(utcTimestamp);
@@ -95,6 +99,10 @@ export default function Stats() {
           <div>
             <span className="font-bold">Game ID:</span>
             <span className="font-mono">{' '}{gameId}</span>
+          </div>
+          <div>
+            <span className="font-bold">Bug Count:</span>
+            <span className="font-mono">{' '}{bugCount}</span>
           </div>
           <table className="text-left font-thin m-2">
             <thead>
