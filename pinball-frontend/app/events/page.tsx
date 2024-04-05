@@ -81,7 +81,7 @@ export default function Stats() {
           data,
         };
         if (pinballEventType === 'GameStarted') {
-          console.log({docData: doc.data()})
+          console.log({ docData: doc.data() })
           setGameStartEvent(gameEvent)
           setCurrentGame({
             ...currentGame,
@@ -94,6 +94,7 @@ export default function Stats() {
       setGameEvents(gameEvents);
     });
     return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -109,25 +110,31 @@ export default function Stats() {
             <span className="font-bold">Game ID:</span>
             <span className="font-mono">{' '}{gameId}</span>
           </div>
-          <div>
-            <span className="font-bold">PR Count:</span>
-            <span className="font-mono">{' '}{prCount}</span>
-          </div>
-          <div>
-            <span className="font-bold">Bug Count:</span>
-            <span className="font-mono">{' '}{bugCount}</span>
-          </div>
-          <div>
-            <span className="font-bold">Ball Drain Count:</span>
-            <span className="font-mono">{' '}{ballDrainCount}</span>
-          </div>
-          <div>
-            <span className="font-bold">Launched Ball Count:</span>
-            <span className="font-mono">{' '}{ballLaunchCount}</span>
-          </div>
-          <div>
-            <span className="font-bold">Loop Hit Count:</span>
-            <span className="font-mono">{' '}{loopHitCount}</span>
+          <div className="grid grid-cols-2 xl:grid-cols-3">
+            <div>
+              <span className="font-bold">Game Events:</span>
+              <span className="font-mono">{' '}{gameEvents.length}</span>
+            </div>
+            <div>
+              <span className="font-bold">PR Count:</span>
+              <span className="font-mono">{' '}{prCount}</span>
+            </div>
+            <div>
+              <span className="font-bold">Bug Count:</span>
+              <span className="font-mono">{' '}{bugCount}</span>
+            </div>
+            <div>
+              <span className="font-bold">Ball Drain Count:</span>
+              <span className="font-mono">{' '}{ballDrainCount}</span>
+            </div>
+            <div>
+              <span className="font-bold">Launched Ball Count:</span>
+              <span className="font-mono">{' '}{ballLaunchCount}</span>
+            </div>
+            <div>
+              <span className="font-bold">Loop Hit Count:</span>
+              <span className="font-mono">{' '}{loopHitCount}</span>
+            </div>
           </div>
           <table className="text-left font-thin m-2">
             <thead>
