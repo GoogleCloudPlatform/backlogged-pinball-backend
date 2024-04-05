@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import QRCodeLink from "@/app/components/qr-code-link";
 import ActiveRankingCard from "../components/active-ranking-card";
 import { getNowTimestamp } from "../utils/timestamp";
+import MetricsTile from "../components/metrics-tile";
 
 type GameEvent = {
   messageId: string,
@@ -97,46 +98,53 @@ export default function Stats() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+const twoDigitPad = (number: number) => {
+  return ('0' + number).slice(-2);
+}
+
   return (
-    <main className="flex min-h-screen flex-col justify-between overflow-x-hidden">
+    <main className="flex min-h-screen flex-col justify-between overflow-x-hidden m-4">
       <QRCodeLink url="https://goo.gle/backlogged-events" />
       <div className="flex">
         <div className="w-full">
-          <div>
-            <span className="font-bold">Machine ID:</span>
-            <span className="font-mono">{' '}{machineId}</span>
+          <div className="pb-2 sm:flex">
+            <div className="font-bold pr-4 text-xl">Machine ID:</div>
+            <div className="font-mono text-xs sm:text-lg">{machineId}</div>
           </div>
-          <div>
-            <span className="font-bold">Game ID:</span>
-            <span className="font-mono">{' '}{gameId}</span>
+          <div className="pb-2 sm:flex">
+            <div className="font-bold pr-4 text-xl">Game ID:</div>
+            <div className="font-mono text-xs sm:text-lg">{gameId}</div>
           </div>
-          <div className="grid md:grid-cols-2 xl:grid-cols-3">
-            <div>
-              <span className="font-bold">PR Count:</span>
-              <span className="font-mono">{' '}{prCount}</span>
-            </div>
-            <div>
-              <span className="font-bold">Bug Count:</span>
-              <span className="font-mono">{' '}{bugCount}</span>
-            </div>
-            <div>
-              <span className="font-bold">Game Events:</span>
-              <span className="font-mono">{' '}{gameEvents.length}</span>
-            </div>
-            <div>
-              <span className="font-bold">Ball Drain Count:</span>
-              <span className="font-mono">{' '}{ballDrainCount}</span>
-            </div>
-            <div>
-              <span className="font-bold">Launched Ball Count:</span>
-              <span className="font-mono">{' '}{ballLaunchCount}</span>
-            </div>
-            <div>
-              <span className="font-bold">Loop Hit Count:</span>
-              <span className="font-mono">{' '}{loopHitCount}</span>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 p-2" style={{ borderWidth: '2px', borderColor: '#FBBC04' }}>
+            <MetricsTile
+              title="Bug Count"
+              value={bugCount}
+              color="#EA4335"
+            />
+            <MetricsTile
+              title="PR Count"
+              value={prCount}
+              color="#4285F4"
+            />
+            <MetricsTile
+              title="Game Events"
+              value={gameEvents.length}
+            />
+            <MetricsTile
+              title="Ball Drains"
+              value={ballDrainCount}
+            />
+            <MetricsTile
+              title="Launched Balls"
+              value={ballLaunchCount}
+            />
+            <MetricsTile
+              title="Loops Hit"
+              value={loopHitCount}
+            />
           </div>
-          <table className="text-left font-thin m-2">
+          <table className="text-left font-thin mt-12">
             <thead>
               <tr>
                 <th scope="col" className="hidden sm:block px-6 py-3 w-[10ch]">
@@ -151,24 +159,24 @@ export default function Stats() {
               {gameEvents.map((gameEvent) => (
                 <tr key={gameEvent.messageId} className="border border-t-1 border-b-0 border-l-0 border-r-0" >
                   <td className="hidden sm:block px-6 py-4 font-mono">
-                    <div className="text-xs whitespace-nowrap">
-                      Message Id:
-                      <br />
-                      {gameEvent.messageId}
-                    </div>
-                    <div className="text-xl whitespace-nowrap pt-4">
+                    <div className="text-xl whitespace-nowrap">
                       Event Type:
                       <br />
                       {gameEvent.pinballEventType}
                     </div>
+                    <div className="text-xs whitespace-nowrap py-4">
+                      Message Id:
+                      <br />
+                      {gameEvent.messageId}
+                    </div>
                   </td>
                   <td scope="row" className="px-6 py-4 whitespace-nowrap font-mono">
                     <div className="sm:hidden text-xs whitespace-nowrap">
-                      <div className="text-xs whitespace-nowrap">
-                        Message Id: {gameEvent.messageId}
-                      </div>
-                      <div className="text-xl whitespace-nowrap py-4">
+                      <div className="text-xl whitespace-nowrap">
                         Event Type: {gameEvent.pinballEventType}
+                      </div>
+                      <div className="text-xs whitespace-nowrap py-4">
+                        Message Id: {gameEvent.messageId}
                       </div>
                     </div>
                     <pre className="text-sm md:text-xl">

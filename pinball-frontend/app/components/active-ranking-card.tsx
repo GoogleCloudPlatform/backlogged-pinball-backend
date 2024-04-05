@@ -65,7 +65,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
   if (!currentGame.avatar) return '';
 
   return (
-    <div className="-z-10 w-96 hidden lg:block">
+    <div className="-z-10 w-[80rem] hidden xl:block">
       <div className="">
         {/* <center className="text-xl">
           {title}
