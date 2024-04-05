@@ -35,8 +35,8 @@ export default function Stats() {
   const loopHitCount = lastLoopHitEvent ? lastLoopHitEvent.data.TotalLoops : 0;
   const [currentGame, setCurrentGame] = useState({
     gameId: 'CURRENT_GAME',
-    playerName: 'Current Game',
-    avatar: 'beaver',
+    playerName: '',
+    avatar: '',
   });
 
   useEffect(() => {

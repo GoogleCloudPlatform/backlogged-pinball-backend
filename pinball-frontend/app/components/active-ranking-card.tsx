@@ -24,15 +24,6 @@ type Game = {
   higher: boolean,
 }
 
-const defaultGames = [{
-  gameId: '',
-  avatar: 'beaver',
-  playerName: 'Loading...',
-  value: 0,
-  place: '99',
-  higher: false,
-}];
-
 const yesterdayUtcTimestamp = getYesterdayTimestamp();
 
 const twoDigitPad = (number: number) => {
@@ -40,7 +31,7 @@ const twoDigitPad = (number: number) => {
 }
 
 export default function ActiveRankingCard({ title, field, units, mapper = returnInput, currentGame }: { title: string, field: string, units: string, mapper?: Function, currentGame: RawGame }) {
-  const [topHundredRawGames, setTopHundredRawGames] = useState<RawGame[]>(defaultGames);
+  const [topHundredRawGames, setTopHundredRawGames] = useState<RawGame[]>([]);
   const topHundredGames: Game[] = topHundredRawGames.filter((game) => game.playerName !== currentGame.playerName).map((rawGame, index) => {
     const higher = rawGame.value > currentGame.value;
     const numericPlace = higher ? index + 1 : index + 2;
@@ -70,6 +61,8 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!currentGame.avatar) return '';
 
   return (
     <div className="-z-10">
