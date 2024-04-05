@@ -33,8 +33,6 @@ export default function Stats() {
   const ballLaunchCount = lastBallLaunchEvent ? lastBallLaunchEvent.data.LaunchedBallCount : 0;
   const lastLoopHitEvent = gameEvents.find((gameEvent) => gameEvent.pinballEventType === 'LoopHit');
   const loopHitCount = lastLoopHitEvent ? lastLoopHitEvent.data.TotalLoops : 0;
-  const lastTargetHitEvent = gameEvents.find((gameEvent) => gameEvent.pinballEventType === 'TargetHit');
-  const targetHitCount = lastTargetHitEvent ? lastTargetHitEvent.data.TotalLoops : 0;
   const [currentGame, setCurrentGame] = useState({
     gameId: 'CURRENT_GAME',
     playerName: 'Current Game',
@@ -130,10 +128,6 @@ export default function Stats() {
           <div>
             <span className="font-bold">Loop Hit Count:</span>
             <span className="font-mono">{' '}{loopHitCount}</span>
-          </div>
-          <div>
-            <span className="font-bold">Target Hit Count:</span>
-            <span className="font-mono">{' '}{targetHitCount}</span>
           </div>
           <table className="text-left font-thin m-2">
             <thead>
