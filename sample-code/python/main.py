@@ -93,11 +93,12 @@ def receive_push_messages():
     # such as a completed game with a new high score, or longest duration.
 
     if False:   # replace with condition that should trigger a response
-        send_message(
+        result = send_message(
             reaction_type="Some Type",
             machine_id="Some Machine ID",
             data="Some JSON Data"
         )
+        print(f"Result of sending message is {result}.")
 
     # Acknowledge the message to prevent retries.
     return "OK", 200
@@ -108,28 +109,7 @@ def receive_push_messages():
 # but is called when processing an incoming message that calls for a response.
 # For example, when a game with a new high score ends.
 def send_message(reaction_type="valid reaction", machine_id="valid ID", data=""):
-    message = {
-        "data": data,
-        "attributes": {
-            "PinballReactionType": reaction_type,
-            "MachineId": machine_id,
-        }
-    }
-
-    # Prepare the message information for use by Pub/Sub
-    body = json.dumps(message)
-    data = body.encode("utf-8")     # Pub/Sub uses byte strings
-
-    # Use client library for publishing
-    client = pubsub.PublisherClient()
-
-    # Which topic should the message be sent to?
-    topic_path = client.topic_path(project_id, topic_id)
-
-    # Publish the message. Returns a future that can be waited on to 
-    # examine to see status of attempt, or ignored if there is no failure
-    # action to be performed.
-    return client.publish(topic_path, data=data)
+    return False    # You will be replacing this function body with a working one
 
 
 # Cloud Run and other platforms will often run this program as a module in a
