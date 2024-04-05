@@ -5,14 +5,10 @@ import { completedGamesRef } from "../firebase";
 import { count, getAggregateFromServer, onSnapshot, query, where } from "firebase/firestore";
 import { getYesterdayTimestamp } from "@/app/utils/timestamp";
 
-const returnInput = (value: number) => value;
-
-
-
 const yesterdayUtcTimestamp = getYesterdayTimestamp();
 
 export default function TotalGames() {
-  const [gameCount, setGameCount] = useState<string>('');
+  const [gameCount, setGameCount] = useState<string>('Loading...');
 
   useEffect(() => {
     const unsubscribe = onSnapshot(query(completedGamesRef), async () => {

@@ -110,11 +110,7 @@ export default function Stats() {
             <span className="font-bold">Game ID:</span>
             <span className="font-mono">{' '}{gameId}</span>
           </div>
-          <div className="grid grid-cols-2 xl:grid-cols-3">
-            <div>
-              <span className="font-bold">Game Events:</span>
-              <span className="font-mono">{' '}{gameEvents.length}</span>
-            </div>
+          <div className="grid md:grid-cols-2 xl:grid-cols-3">
             <div>
               <span className="font-bold">PR Count:</span>
               <span className="font-mono">{' '}{prCount}</span>
@@ -122,6 +118,10 @@ export default function Stats() {
             <div>
               <span className="font-bold">Bug Count:</span>
               <span className="font-mono">{' '}{bugCount}</span>
+            </div>
+            <div>
+              <span className="font-bold">Game Events:</span>
+              <span className="font-mono">{' '}{gameEvents.length}</span>
             </div>
             <div>
               <span className="font-bold">Ball Drain Count:</span>
@@ -139,11 +139,8 @@ export default function Stats() {
           <table className="text-left font-thin m-2">
             <thead>
               <tr>
-                <th scope="col" className="px-6 py-3 w-[10ch]">
-                  Message ID
-                </th>
-                <th scope="col" className="px-6 py-3 w-[20ch]">
-                  Game Event
+                <th scope="col" className="hidden sm:block px-6 py-3 w-[10ch]">
+                  Metadata
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Event Data
@@ -153,14 +150,28 @@ export default function Stats() {
             <tbody>
               {gameEvents.map((gameEvent) => (
                 <tr key={gameEvent.messageId} className="border border-t-1 border-b-0 border-l-0 border-r-0" >
-                  <td scope="row" className="px-6 py-4 whitespace-nowrap font-mono text-xs">
-                    {gameEvent.messageId}
+                  <td className="hidden sm:block px-6 py-4 font-mono">
+                    <div className="text-xs whitespace-nowrap">
+                      Message Id:
+                      <br />
+                      {gameEvent.messageId}
+                    </div>
+                    <div className="text-xl whitespace-nowrap pt-4">
+                      Event Type:
+                      <br />
+                      {gameEvent.pinballEventType}
+                    </div>
                   </td>
-                  <td scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-xl font-mono">
-                    {gameEvent.pinballEventType}
-                  </td>
-                  <td scope="row" className="px-6 py-4 whitespace-nowrap font-mono text-xl">
-                    <pre>
+                  <td scope="row" className="px-6 py-4 whitespace-nowrap font-mono">
+                    <div className="sm:hidden text-xs whitespace-nowrap">
+                      <div className="text-xs whitespace-nowrap">
+                        Message Id: {gameEvent.messageId}
+                      </div>
+                      <div className="text-xl whitespace-nowrap py-4">
+                        Event Type: {gameEvent.pinballEventType}
+                      </div>
+                    </div>
+                    <pre className="text-sm md:text-xl">
                       {gameEvent.dataString}
                     </pre>
                   </td>
