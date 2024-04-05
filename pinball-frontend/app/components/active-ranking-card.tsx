@@ -70,13 +70,13 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
         {/* <center className="text-xl">
           {title}
         </center> */}
-        <div className="absolute right-8 px-6 bg-white w-full transition-all duration-1000" style={{ height: `${(Math.min(6, currentPlayerPlace)) * 70 - 15}px` }}>
+        <div className="absolute right-8 px-6 bg-white w-full transition-all duration-1000" style={{ height: `${(Math.min(6, currentPlayerPlace)) * 70}px` }}>
           <div className="absolute right-0 overflow-y-clip transition-all duration-1000" style={{ height: `${(Math.min(5, higherGames.length)) * 70}px` }}>
             {topHundredGames.map((game, index) => (
               <div key={game.gameId} className="absolute right-0 transition-all duration-1000" style={{ top: `${(index - Math.max(0, higherGames.length - 5)) * 70}px` }}>
                 <div className="flex justify-start w-72">
                   <span className="font-mono">
-                    {Number(game.place) < currentPlayerPlace ? game.place : twoDigitPad(currentPlayerPlace)}
+                    {twoDigitPad(index + 1)}
                   </span>
                   <div className="flex justify-between w-full">
                     <Avatar avatar={game.avatar} />
