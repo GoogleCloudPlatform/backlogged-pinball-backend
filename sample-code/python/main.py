@@ -15,8 +15,6 @@
 
 # This is a minimal starting app for receiving and sending Pub/Sub messages from
 # and to the Next 2024 Pinball game, and is used in the Pinball Python Codelab.
-#
-# View and follow the codelab at https://developers.google.com/codelabs/pinball-python
 
 
 # Receiving messages via push subscriptions does not require knowing where they
@@ -73,7 +71,7 @@ def receive_push_messages():
     # See https://cloud.google.com/pubsub/docs for more information on
     # the structure and contents of Pub/Sub messages in general.
     
-    # See [TODO fill in URL] for specifications of the Pinball message format.
+    # See the end of the codelab for specifications of the Pinball message format.
 
     # Determine whether you want the send a message back to the Pinball machine.
     # For most events you will not want to do this to avoid spamming the
