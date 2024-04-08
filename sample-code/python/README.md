@@ -3,6 +3,8 @@ This sample Python app is intended to react to Pub/Sub messages coming from a pi
 
 Feel free to make changes and deploy it to the sample project that is already receiving Pub/Sub events
 
+A codelab to guide you is available at https://storage.googleapis.com/pinball-codelab/index.html
+
 ## Deployment instructions
 From this directory, run the following command:
 ```
