@@ -1,0 +1,18 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2024-04-08T11:24:14-07:00",
+  "id": "pinball-codelab",
+  "duration": 0,
+  "title": "Pinball Starter Codelab",
+  "authors": "Charlie Engelke",
+  "summary": "You will build and deploy a Cloud Run app that receives Pub/Sub messages from real and simulated Pinball machines. You will then extend the app to respond to the Pinball machine using Gemini CodeAssist help.",
+  "source": "index.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "pinball-codelab"
+}
