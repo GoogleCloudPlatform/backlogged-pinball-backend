@@ -61,12 +61,9 @@ app.post('/', (req, res) => {
     // then send a burst of 'beaver' emoji
 
     // if (message.attributes && message.attributes[EVENT_TYPE] == "BacklogUpdated") {
-    //   if (messageData.BacklogCount == 7) {
-    //     sendResponse(EMOJI, "GBL:1", { EmojiName: "beaver" });
-    //   }
-    // }
-
-    
+      // if (messageData.BacklogCount == 7) {
+      //   sendResponse(EMOJI, "GBL:1", { EmojiName: "beaver" });
+      // }
   } catch (error) {
     console.error('Error processing message data:', error);
   }
