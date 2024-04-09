@@ -121,7 +121,7 @@ Different types of messages will have different types of information in the **da
 Add a log message every time a game ends that looks like the following:
 
 ```shell
-!!!!! GAME XXXX ENDED !!!!! Score 9999, lasting 8888 milliseconds on machine YYYY! Congratulations!
+"!!!!! GAME XXXX ENDED !!!!! Score 9999, lasting 8888 milliseconds on machine YYYY! Congratulations!"
 ```
 
 Replace XXXX with the **GameId**, 9999 with the **TotalScore**, 8888 with the **GameLengthMilliseconds**, and YYYY with the **MachineId**.
