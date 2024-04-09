@@ -56,17 +56,30 @@ app.post('/', (req, res) => {
     if (false) {
       sendResponse(DISPLAY_MESSAGE, "GBL:1", { MessageKey: "LUCKY", HexColor: "#EA8600" });
     }
-    // If the message is a 'BacklogUpdated' event
-    // and if the current backlog count is 7
-    // then send a burst of 'beaver' emoji
+    // If the message is a 'SlingshotHit' event
+    // then send a burst of 'wood' emoji
+    // or a message "I'm feeling Lucky"
 
-    // if (message.attributes && message.attributes[EVENT_TYPE] == "BacklogUpdated") {
-    //   if (messageData.BacklogCount == 7) {
-    //     sendResponse(EMOJI, "GBL:1", { EmojiName: "beaver" });
-    //   }
-    // }
+    if (message.attributes && message.attributes[EVENT_TYPE] == "SlingshotHit") {
+      if (messageData.SlingshotName == "slingR") {
+        sendResponse(EMOJI, "GBL:1", { EmojiName: "wood" });
+      } else {
+        sendResponse(DISPLAY_MESSAGE, "GBL:1", {MessageKey: "LUCKY", HexColor: "#FFFFFF"});
+      }
+    }
+    // Try sending the following emoji:
+    // beaver, call_me, clown, cool, heart, moai, popper,
+    // smile, think, thumbs_up, wood
 
-    
+    // Or experiment with different messages!
+    //        { "GREAT_JOB", "Great job!" },
+    //        { "WAY_TO_GO", "Way to go!" },
+    //        { "SQUASH_BUGS", "Squash those bugs!" },
+    //        { "MERGE", "No merge conflicts!" },
+    //        { "LUCKY", "I'm feeling lucky!" },
+    //        { "ACHIEVEMENT", "Achievement unlocked!" },
+    //        { "SHIP", "Ship it!" },
+
   } catch (error) {
     console.error('Error processing message data:', error);
   }
@@ -76,7 +89,30 @@ app.post('/', (req, res) => {
 
 
 async function sendResponse(reactionType, machineId, data) {
-  // Fill in with your solution
+
+  console.log('Target Project ID:', PROJECT_ID);
+  console.log('Topic ID:', TOPIC_ID);
+
+  const message = {
+    data: Buffer.from(JSON.stringify(data)),
+    attributes: {
+      PinballReactionType: reactionType,
+      MachineId: machineId
+    }
+  };
+
+  console.log('Message Data:', message);
+
+  const topicPath = `projects/${PROJECT_ID}/topics/${TOPIC_ID}`;
+
+
+  try {
+    const messageId = await pubSubClient.topic(topicPath).publishMessage(message);
+    console.log(`Message ${messageId} published successfully.`);
+  } catch (error) {
+    console.error(`Error publishing message: ${error.message}`);
+
+  }
 }
 
 // Start a web server in order to respond to the pub/sub message
