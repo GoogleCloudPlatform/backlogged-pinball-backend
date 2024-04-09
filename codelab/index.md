@@ -135,7 +135,7 @@ Redeploy the app and examine the log to see if it is working.
 
 Right now, the sample code contains a statement to send a message to a Pinball machine. The code current never runs, since it is inside an if statement with a false condition. The code calls the **send_response** or **sendResponse** function which is now an empty stub.
 
-You will replace the if statement's false condition with a check for a **GameEnded** event. In case of that event, the code will call send_response or sendResponse with **reaction_type** `DISPLAY_MESSAGE`, and **data** `"MessageKey: "LUCKY", "HexColor": "#EA8600"}`. The **MachineId** should be the one from the GameEnded event.
+You will replace the if statement's false condition with a check for a **GameEnded** event. In case of that event, the code will call send_response or sendResponse with **reaction_type** `DISPLAY_MESSAGE`, and **data** `"{MessageKey: "LUCKY", "HexColor": "#EA8600"}`. The **MachineId** should be the one from the GameEnded event.
 
 You will replace the empty stub of the send_response or sendResponse function with one that will send the specified message to the Pub/Sub `TOPIC_ID` of project `PROJECT_ID`. Both those values are already defined and assigned in the sample code. Use Gemini CodeAssist and online documentation to write the code. The code should return the result of the Pub/Sub publishing operation.
 
