@@ -75,7 +75,7 @@ Download the sample code in JavaScript and Python from GitHub by entering the fo
 
 ```shell
 cd ~/
-rm -rf ~/
+rm -rf ~/*
 git clone https://github.com/GoogleCloudPlatform/backlogged-pinball-backend.git
 cd backlogged-pinball-backend/sample-code
 ```
