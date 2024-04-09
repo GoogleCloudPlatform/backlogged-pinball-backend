@@ -76,7 +76,30 @@ app.post('/', (req, res) => {
 
 
 async function sendResponse(reactionType, machineId, data) {
-  // Fill in with your solution
+
+  console.log('Target Project ID:', PROJECT_ID);
+  console.log('Topic ID:', TOPIC_ID);
+
+  const message = {
+    data: Buffer.from(JSON.stringify(data)),
+    attributes: {
+      PinballReactionType: reactionType,
+      MachineId: machineId
+    }
+  };
+
+  console.log('Message Data:', message);
+
+  const topicPath = `projects/${PROJECT_ID}/topics/${TOPIC_ID}`;
+
+
+  try {
+    const messageId = await pubSubClient.topic(topicPath).publishMessage(message);
+    console.log(`Message ${messageId} published successfully.`);
+  } catch (error) {
+    console.error(`Error publishing message: ${error.message}`);
+
+  }
 }
 
 // Start a web server in order to respond to the pub/sub message
