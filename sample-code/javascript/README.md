@@ -8,5 +8,5 @@ A codelab to guide you is available at https://storage.googleapis.com/pinball-co
 ## Deployment instructions
 From this directory, run the following command:
 ```
-gcloud run deploy pinball --platform managed --region us-central1 --source=.
+gcloud run deploy pinball --platform managed --region us-west4 --source=.
 ```

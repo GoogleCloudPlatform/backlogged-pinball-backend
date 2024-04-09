@@ -79,10 +79,10 @@ def receive_push_messages():
     # such as a completed game with a new high score, or longest duration.
 
     if False:   # replace with condition that should trigger a response
-        result = send_message(
-            reaction_type="Some Type",
-            machine_id="Some Machine ID",
-            data="Some JSON Data"
+        result = send_response(
+            reaction_type="DisplayMessage",
+            machine_id="GBL:1",
+            data={"MessageKey": "LUCKY"}
         )
         print(f"Result of sending message is {result}.")
 
@@ -94,9 +94,29 @@ def receive_push_messages():
 # displaying. This function is not triggered in response to an incoming event,
 # but is called when processing an incoming message that calls for a response.
 # For example, when a game with a new high score ends.
-def send_message(reaction_type="valid reaction", machine_id="valid ID", data=""):
-    return False    # You will be replacing this function body with a working one
+def send_response(reaction_type="valid reaction", machine_id="valid ID", data=""):
+    # return False    # You will be replacing this function body with a working one
+    print("Target Project ID: "+PROJECT_ID)
+    print("Topic ID: "+TOPIC_ID)
 
+    publisher = pubsub.PublisherClient()
+    topic_path = f"projects/{PROJECT_ID}/topics/{TOPIC_ID}"
+
+    message_data = json.dumps(data).encode("utf-8")
+    message = {
+        "data": message_data,
+        "attributes": {
+            "PinballReactionType": reaction_type,
+            "MachineId": machine_id
+        } 
+    }
+
+    try: 
+        future = publisher.publish(topic_path, message['data'], **message['attributes'])
+        message_id = future.result()
+        print(f"Message {message_id} published successfully")
+    except Exception as e:
+        print(f"Error publishing message: {str(e)}")
 
 # Cloud Run and other platforms will often run this program as a module in a
 # preferred web server application. If this file is run as a stand-alone
