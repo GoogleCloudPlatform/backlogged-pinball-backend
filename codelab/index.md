@@ -75,11 +75,16 @@ Download the sample code in JavaScript and Python from GitHub by entering the fo
 
 ```shell
 cd ~/
+rm -rf ~/
 git clone https://github.com/GoogleCloudPlatform/backlogged-pinball-backend.git
 cd backlogged-pinball-backend/sample-code
 ```
 
-From there, change to the `python` or `javascript` subdirectory, depending on which language you want to use for this lab.
+From there, change to the `python` or `javascript` subdirectory, depending on which language you want to use for this lab and open the Cloud Shell editor to those file with the command:
+
+```shell
+cloudshell edit-files *
+```
 
 In the editor portion of the IDE, click the Open Folder button and select the same directory in order to view the code.
 
