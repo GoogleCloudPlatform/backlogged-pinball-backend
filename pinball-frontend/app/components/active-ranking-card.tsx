@@ -26,8 +26,8 @@ type Game = {
 
 const yesterdayUtcTimestamp = getYesterdayTimestamp();
 
-const twoDigitPad = (number: number) => {
-  return ('0' + number).slice(-2);
+const threeDigitPad = (number: number) => {
+  return ('00' + number).slice(-3);
 }
 
 export default function ActiveRankingCard({ title, field, units, mapper = returnInput, currentGame }: { title: string, field: string, units: string, mapper?: Function, currentGame: RawGame }) {
@@ -35,7 +35,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
   const topHundredGames: Game[] = topHundredRawGames.filter((game) => game.playerName !== currentGame.playerName).map((rawGame, index) => {
     const higher = rawGame.value > currentGame.value;
     const numericPlace = higher ? index + 1 : index + 2;
-    const place = twoDigitPad(numericPlace);
+    const place = threeDigitPad(numericPlace);
     const value = mapper(rawGame.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     return { ...rawGame, place, higher, value }
   });
@@ -76,7 +76,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
               <div key={game.gameId} className="absolute right-0 transition-all duration-1000" style={{ top: `${(index - Math.max(0, higherGames.length - 5)) * 70}px` }}>
                 <div className="flex justify-start w-72">
                   <span className="font-mono">
-                    {twoDigitPad(index + 1)}
+                    {threeDigitPad(index + 1)}
                   </span>
                   <div className="flex justify-between w-full">
                     <Avatar avatar={game.avatar} />
@@ -96,6 +96,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
             </div>
             <div className="flex justify-start w-72">
               <span className="font-mono">
+                {higherGames.length < 99 && '0'}
                 {higherGames.length < 9 && '0'}
                 {currentPlayerPlace}
               </span>
