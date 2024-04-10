@@ -45,7 +45,7 @@ export default function ActiveRankingCard({ title, field, units, mapper = return
   useEffect(() => {
     // limit to 98 to keep everything in 2 digits
     // 98 + 1 (for the player) is 99
-    const maxValueQuery = query(completedGamesRef, where('utcTimestamp', '>', yesterdayUtcTimestamp), orderBy(field, 'desc'), limit(98))
+    const maxValueQuery = query(completedGamesRef, where('utcTimestamp', '>', yesterdayUtcTimestamp), orderBy(field, 'desc'), limit(998))
     const unsubscribe = onSnapshot(maxValueQuery, (querySnapshot) => {
       const topHundredRawGames: RawGame[] = querySnapshot.docs.map(gameStats => {
         const data = gameStats.data();
