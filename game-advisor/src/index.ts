@@ -7,10 +7,19 @@ import { defineFlow, startFlowsServer } from '@genkit-ai/flow';
 import { vertexAI } from '@genkit-ai/vertexai';
 import { ollama } from 'genkitx-ollama'
 import { dotprompt, promptRef } from '@genkit-ai/dotprompt';
+import { initializeApp, applicationDefault } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
 
 // Import models from the Vertex AI plugin. The Vertex AI API provides access to
 // several generative models. Here, we import Gemini 1.5 Flash.
 import { gemini15Flash } from '@genkit-ai/vertexai';
+
+initializeApp({
+  credential: applicationDefault()
+});
+
+const db = getFirestore();
+
 
 configureGenkit({
   plugins: [
@@ -57,17 +66,42 @@ export const menuSuggestionFlow = defineFlow(
   }
 );
 
+const gameSummaryOutputSchema = z.object({
+  headline: z.string(),
+  analysis: z.string(),
+  tips: z.array(z.string()),
+  grade: z.string(),
+});
 
 export const gameSummaryFlow = defineFlow(
   {
     name: 'gameSummaryFlow',
+    inputSchema: z.string(),
+    outputSchema: gameSummaryOutputSchema
   },
   async (gameId) => {
-		// Construct a request and send it to the model API.
-    const prompt = promptRef("summary");
-    const resp = await prompt.generate({});
-    console.log((resp).output())
-    return resp.output();
+
+    try {
+      const snapshot = await db.collection('AllGameEvents')
+        .where('GameId', '==', gameId)
+        .get();
+  
+      const events: { id: string; }[] = [];
+      snapshot.forEach(doc => {
+        events.push({ id: doc.id, ...doc.data() });
+      });
+      let content = JSON.stringify(events).replace(/"/g, '\\"')
+      
+      console.log(`stringified log: ${content}`);
+
+		  // Construct a request and send it to the model API.
+      const prompt = promptRef("summary");
+      const resp = await prompt.generate({input: {gameLog: content}});
+      console.log((resp).output())
+      return resp.output();
+    } catch (error) {
+    console.error('Error fetching events:', error);
+  }
   }
 )
 

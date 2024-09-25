@@ -10,7 +10,7 @@ output:
     headline: string
     analysis: string
     tips(array, tips for improving gameplay): string
-    grade(enum, letter grade for gameplay performance): ['A+', 'B', 'C']
+    grade(enum, letter grade for gameplay performance): ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C', 'D', 'F']
 
 ---
 
