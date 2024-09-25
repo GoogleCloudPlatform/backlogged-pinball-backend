@@ -1,5 +1,5 @@
 ---
-model: vertexai/gemini-1.5-flash
+model: ollama/llama3.1:70b
 config:
   temperature: 0.75
 input:
@@ -21,6 +21,10 @@ a more-indepth analysis of the game, 3-5 tips for how the player could
 improve their performance, and a letter grade for the overall performance.
 
 An A+ game will have at least 10 loops and at least 40 flippers hit.
+
+Do not output markdown or any explanation or preamble.  Simply output the JSON in the schema to be specified below.
+
+Do not output code to generate JSON.  Output JSON ONLY
 
 Game Log:
 {{gameLog}}

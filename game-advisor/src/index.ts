@@ -14,6 +14,8 @@ import { getFirestore } from 'firebase-admin/firestore';
 // several generative models. Here, we import Gemini 1.5 Flash.
 import { gemini15Flash } from '@genkit-ai/vertexai';
 
+const OLLAMA_ADDRESS = process.env.OLLAMA_ADDRESS || 'http://localhost:8080';
+
 initializeApp({
   credential: applicationDefault()
 });
@@ -28,11 +30,11 @@ configureGenkit({
     ollama({
       models: [
         {
-          name: 'Meta-Llama-3.1-70B-Instruct-FP8',
-          type: 'chat',
+          name: 'llama3.1:70b',
+          type: 'generate',
         },
       ],
-      serverAddress: 'http://localhost:8000'
+      serverAddress: OLLAMA_ADDRESS
     }),
     dotprompt()
   ],
@@ -53,7 +55,7 @@ export const menuSuggestionFlow = defineFlow(
 		// Construct a request and send it to the model API.
     const llmResponse = await generate({
       prompt: `Suggest an item for the menu of a ${subject} themed restaurant`,
-      model: gemini15Flash,
+      model: 'ollama/llama3.1:70b',
       config: {
         temperature: 1,
       },
@@ -92,12 +94,12 @@ export const gameSummaryFlow = defineFlow(
       });
       let content = JSON.stringify(events).replace(/"/g, '\\"')
       
-      console.log(`stringified log: ${content}`);
+      // console.log(`stringified log: ${content}`);
 
 		  // Construct a request and send it to the model API.
       const prompt = promptRef("summary");
       const resp = await prompt.generate({input: {gameLog: content}});
-      console.log((resp).output())
+      // console.log(resp.output())
       return resp.output();
     } catch (error) {
     console.error('Error fetching events:', error);
