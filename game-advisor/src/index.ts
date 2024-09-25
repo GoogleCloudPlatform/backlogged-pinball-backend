@@ -57,18 +57,10 @@ export const menuSuggestionFlow = defineFlow(
   }
 );
 
-const gameSummaryOutputSchema = z.object({
-  headline: z.string(),
-  analysis: z.string(),
-  tips: z.array(z.string()),
-  grade: z.string(),
-});
 
 export const gameSummaryFlow = defineFlow(
   {
     name: 'gameSummaryFlow',
-    inputSchema: z.string(),
-    outputSchema: gameSummaryOutputSchema
   },
   async (gameId) => {
 		// Construct a request and send it to the model API.

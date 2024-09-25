@@ -73,16 +73,8 @@ exports.menuSuggestionFlow = (0, flow_1.defineFlow)({
     // structured output or chain the response into another LLM call, etc.
     return llmResponse.text();
 });
-const gameSummaryOutputSchema = z.object({
-    headline: z.string(),
-    analysis: z.string(),
-    tips: z.array(z.string()),
-    grade: z.string(),
-});
 exports.gameSummaryFlow = (0, flow_1.defineFlow)({
     name: 'gameSummaryFlow',
-    inputSchema: z.string(),
-    outputSchema: gameSummaryOutputSchema
 }, async (gameId) => {
     // Construct a request and send it to the model API.
     const prompt = (0, dotprompt_1.promptRef)("summary");
