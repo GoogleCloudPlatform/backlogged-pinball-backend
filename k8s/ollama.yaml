@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+spec:
+  selector:
+    matchLabels:
+      name: ollama
+  template:
+    metadata:
+      labels:
+        name: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: us-docker.pkg.dev/backlogged-ai/llm/ollama:v1.0.0
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            cpu: "20"
+            memory: "80Gi"
+            ephemeral-storage: "100Gi"
+            nvidia.com/gpu: "2"
+          limits:
+            cpu: "20"
+            memory: "80Gi"
+            ephemeral-storage: "100Gi"
+            nvidia.com/gpu: "2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-service
+spec:
+  selector:
+    name: ollama
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
