@@ -29,6 +29,9 @@ spec:
             memory: "80Gi"
             ephemeral-storage: "100Gi"
             nvidia.com/gpu: "2"
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-h100-80gb
+        cloud.google.com/gke-gpu-driver-version: latest
 ---
 apiVersion: v1
 kind: Service
