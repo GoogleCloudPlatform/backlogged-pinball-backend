@@ -12,23 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ollama/ollama:0.3.12
+FROM node:22
 
-# Listen on all interfaces, port 8080
-ENV OLLAMA_HOST 0.0.0.0:8080
+# Create app directory
+WORKDIR /usr/src/app
 
-# Store model weight files in /models
-ENV OLLAMA_MODELS /models
+# Install dependencies
+COPY package*.json ./
+RUN npm install
 
-# Reduce logging verbosity
-ENV OLLAMA_DEBUG false
+# Bundle source code
+COPY . .
 
-# Never unload model weights from the GPU
-ENV OLLAMA_KEEP_ALIVE -1 
+# Build the app
+RUN npm run build
 
-# Store the model weights in the container image
-ENV MODEL llama3.1:70b
-RUN ollama serve & sleep 5 && ollama pull $MODEL 
+# Expose the port the app listens on
+EXPOSE 3400
 
-# Start Ollama
-ENTRYPOINT ["ollama", "serve"]
+# Start the app
+CMD [ "npm", "start" ]
