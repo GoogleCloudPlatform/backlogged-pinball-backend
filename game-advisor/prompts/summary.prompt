@@ -1,0 +1,30 @@
+---
+model: ollama/llama3.1:70b
+config:
+  temperature: 0.75
+input:
+  schema:
+    gameLog: string
+output:
+  schema:
+    headline: string
+    analysis: string
+    tips(array, tips for improving gameplay): string
+    grade(enum, letter grade for gameplay performance): ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C', 'D', 'F']
+
+---
+
+You are an expert on pinball gameplay.  
+Read the following gameplay log and provide an analysis of the game.  
+You should provide a short 5-15 word headline summarizing the game,
+a more-indepth analysis of the game, 3-5 tips for how the player could 
+improve their performance, and a letter grade for the overall performance.
+
+An A+ game will have at least 10 loops and at least 40 flippers hit.
+
+Do not output markdown or any explanation or preamble.  Simply output the JSON in the schema to be specified below.
+
+Do not output code to generate JSON.  Output JSON ONLY
+
+Game Log:
+{{gameLog}}
