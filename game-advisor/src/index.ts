@@ -85,7 +85,14 @@ export const gameSummaryFlow = defineFlow(
       const prompt = promptRef("summary");
       const resp = await prompt.generate({input: {gameLog: content}});
       // console.log(resp.output())
-      return resp.output();
+
+ // Store the analysis in Firestore
+    const analysis = resp.output();
+    const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
+    await gameAnalysesRef.set( analysis );
+
+
+      return analysis;
     } catch (error) {
     console.error('Error fetching events:', error);
   }
