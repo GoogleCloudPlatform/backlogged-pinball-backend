@@ -21,7 +21,7 @@ import { vertexAI } from '@genkit-ai/vertexai';
 import { ollama } from 'genkitx-ollama'
 import { dotprompt, promptRef } from '@genkit-ai/dotprompt';
 import { initializeApp, applicationDefault } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 
 const OLLAMA_ADDRESS = process.env.OLLAMA_ADDRESS || 'http://localhost:8080';
 
@@ -89,7 +89,10 @@ export const gameSummaryFlow = defineFlow(
  // Store the analysis in Firestore
     const analysis = resp.output();
     const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
-    await gameAnalysesRef.set( analysis );
+    await gameAnalysesRef.set({ 
+      ...analysis, 
+      insertionTimestamp: FieldValue.serverTimestamp() // Add timestamp 
+    });
 
 
       return analysis;
