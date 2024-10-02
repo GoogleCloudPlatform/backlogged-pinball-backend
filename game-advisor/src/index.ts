@@ -72,33 +72,41 @@ export const gameSummaryFlow = defineFlow(
       const snapshot = await db.collection('AllGameEvents')
         .where('GameId', '==', gameId)
         .get();
-  
-      const events: { id: string; }[] = [];
-      snapshot.forEach(doc => {
-        events.push({ id: doc.id, ...doc.data() });
-      });
-      let content = JSON.stringify(events).replace(/"/g, '\\"')
-      
-      // console.log(`stringified log: ${content}`);
 
-		  // Construct a request and send it to the model API.
+
+      let content = "";
+      snapshot.forEach(doc => {
+        const eventData = doc.data();
+        let line = `PinballEventType:${eventData.PinballEventType} `;
+
+        // Add data fields from eventData.data
+        if (eventData.data) {
+          for (const [key, value] of Object.entries(eventData.data)) {
+            line += `${key}:${value} `;
+          }
+        }
+        content += line.trim() + "\n";
+      });
+
+
+      // Construct a request and send it to the model API.
       const prompt = promptRef("summary");
-      const resp = await prompt.generate({input: {gameLog: content}});
+      const resp = await prompt.generate({ input: { gameLog: content } });
       // console.log(resp.output())
 
- // Store the analysis in Firestore
-    const analysis = resp.output();
-    const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
-    await gameAnalysesRef.set({ 
-      ...analysis, 
-      insertionTimestamp: FieldValue.serverTimestamp() // Add timestamp 
-    });
+      // Store the analysis in Firestore
+      const analysis = resp.output();
+      const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
+      await gameAnalysesRef.set({
+        ...analysis,
+        insertionTimestamp: FieldValue.serverTimestamp() // Add timestamp 
+      });
 
 
       return analysis;
     } catch (error) {
-    console.error('Error fetching events:', error);
-  }
+      console.error('Error fetching events:', error);
+    }
   }
 )
 
