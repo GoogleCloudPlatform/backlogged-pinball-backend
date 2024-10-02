@@ -32,14 +32,14 @@ export default function Home() {
         </Link>
 
         <Link
-          href="/learn"
+          href="/analysis"
           className="group rounded-lg border border-2 border-black px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 bg-white m-2"
         >
           <h2 className={`md:mb-3 md:text-xl font-semibold`}>
-            Learn
+            Analysis
           </h2>
           <p className={`hidden md:block m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn to use the Google Cloud products used in this project.
+           See the latest game analysis as it happens!
           </p>
         </Link>
 

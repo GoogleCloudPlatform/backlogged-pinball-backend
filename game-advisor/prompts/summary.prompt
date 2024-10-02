@@ -1,5 +1,5 @@
 ---
-model: ollama/llama3.1:70b
+model: vertexai/gemini-1.5-flash 
 config:
   temperature: 0.75
 input:
