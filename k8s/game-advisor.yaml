@@ -14,7 +14,7 @@ spec:
       serviceAccount: genkit
       containers:
       - name: game-advisor
-        image: us-docker.pkg.dev/backlogged-ai/llm/game-advisor:v2.0.0
+        image: us-docker.pkg.dev/backlogged-ai/llm/game-advisor:v2.1.0
         resources:
           limits:
             memory: "4Gi"

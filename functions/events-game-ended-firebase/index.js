@@ -15,6 +15,7 @@
 const functions = require('@google-cloud/functions-framework');
 const base64 = require('base-64');
 const admin = require('firebase-admin');
+const http = require('http');
 
 admin.initializeApp(); // Initialize the Firebase Admin SDK
 const db = admin.firestore(); // Get a reference to the Firestore database
@@ -42,6 +43,41 @@ functions.cloudEvent('events-game-ended-firebase', async cloudEvent => {
     const collectionRef = db.collection('CompletedGames');
     const docRef = await collectionRef.add(mergedData); 
     console.log(`Document written with ID: ${docRef.id}`);
+
+    if (jsonData.GameId) { 
+      const postData = JSON.stringify({ data: jsonData.GameId }); 
+  
+      const options = {
+        hostname: '34.118.237.51',
+        port: 80, 
+        path: '/gameSummaryFlow',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData)
+        }
+      };
+
+      var req = https.request(options, (res) => {
+        console.log('statusCode:', res.statusCode);
+        console.log('headers:', res.headers);
+      
+        res.on('data', (d) => {
+          console.log(`Game Advisor Response: ${d}`)
+        });
+      });
+      
+      req.on('error', (e) => {
+        console.error(e);
+      });
+      
+      req.write(postData);
+      req.end();
+    } else {
+      console.log("GameId attribute missing from GameEndEvent");
+    }
+  
+
   } else {
     console.log('Message did not have the expected attribute. Skipping...');
   }
