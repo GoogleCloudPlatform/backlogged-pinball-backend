@@ -19,6 +19,8 @@ const http = require('http');
 
 admin.initializeApp(); // Initialize the Firebase Admin SDK
 const db = admin.firestore(); // Get a reference to the Firestore database
+const GAME_ADVISOR_SERVICE_HOST = process.env.GAME_ADVISOR_SERVICE_HOST || 'http://localhost';
+const GAME_ADVISOR_SERVICE_PORT = process.env.GAME_ADVISOR_SERVICE_PORT || '8080';
 
 functions.cloudEvent('events-game-ended-firebase', async cloudEvent => {
   const messageData = cloudEvent.data.message;
@@ -31,7 +33,6 @@ functions.cloudEvent('events-game-ended-firebase', async cloudEvent => {
     const now = new Date;
     const utcTimestamp = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(), now.getUTCDate() , 
           now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds())
-
     const mergedData = { 
       ...jsonData,
       ...messageData.attributes,
@@ -44,12 +45,12 @@ functions.cloudEvent('events-game-ended-firebase', async cloudEvent => {
     const docRef = await collectionRef.add(mergedData); 
     console.log(`Document written with ID: ${docRef.id}`);
 
-    if (jsonData.GameId) { 
-      const postData = JSON.stringify({ data: jsonData.GameId }); 
+    if (messageData.attributes && messageData.attributes.GameId) { 
+      const postData = JSON.stringify({ data: messageData.attributes.GameId }); 
   
       const options = {
-        hostname: '34.118.237.51',
-        port: 80, 
+        hostname: GAME_ADVISOR_SERVICE_HOST,
+        port: GAME_ADVISOR_SERVICE_PORT, 
         path: '/gameSummaryFlow',
         method: 'POST',
         headers: {
@@ -58,7 +59,7 @@ functions.cloudEvent('events-game-ended-firebase', async cloudEvent => {
         }
       };
 
-      var req = https.request(options, (res) => {
+      var req = http.request(options, (res) => {
         console.log('statusCode:', res.statusCode);
         console.log('headers:', res.headers);
       
@@ -68,13 +69,15 @@ functions.cloudEvent('events-game-ended-firebase', async cloudEvent => {
       });
       
       req.on('error', (e) => {
-        console.error(e);
+        console.error(`Error posting to advisor service: ${e}`);
       });
       
       req.write(postData);
       req.end();
     } else {
-      console.log("GameId attribute missing from GameEndEvent");
+      console.log("GameId attribute missing from messageData.attributes");
+      console.log(JSON.stringify(messageData));
+      console.log(JSON.stringify(messageData.attributes));
     }
   
 
