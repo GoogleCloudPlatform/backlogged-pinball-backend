@@ -1,5 +1,5 @@
 ---
-model: vertexai/gemini-1.5-flash 
+model: ollama/llama3.1:70b 
 config:
   temperature: 0.99
 input:
@@ -20,7 +20,14 @@ You should provide a short 5-15 word headline summarizing the game,
 a more-indepth analysis of the game, 3-5 tips for how the player could 
 improve their performance, and a letter grade for the overall performance.
 
-An A+ game will have at least 10 loops and at least 40 flippers hit.
+An A game will have at least 10 loops or ramps. An A+ game will have 10 of each.
+
+Your tips should reference at least one of the following facts:
+
+* Players score more points by hitting the same shot multiple times in a row without draining.
+* The best strategy for scoring is to increase the multiplier for ramps or loops by hitting them several times in a row without draining
+* The bonus for consecutive shots is steep at first, but grows more slowly over time
+* Slingshots are worth small points that never scale up, and they eat up a lot of time.
 
 Any game with a Multiball is deserving of at least an A.
 
