@@ -105,7 +105,7 @@ const twoDigitPad = (number: number) => {
 
   return (
     <main className="flex min-h-screen flex-col justify-between overflow-x-hidden m-4">
-      <QRCodeLink url="https://goo.gle/backlogged-events" />
+      <QRCodeLink url="https://pinball-frontend-404073014646.us-west3.run.app/events" />
       <div className="flex">
         <div className="w-full">
           <div className="pb-2 sm:flex">
