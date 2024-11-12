@@ -68,44 +68,47 @@ export const gameSummaryFlow = defineFlow(
   },
   async (gameId) => {
 
-    try {
-      const snapshot = await db.collection('AllGameEvents')
-        .where('GameId', '==', gameId)
-        .get();
+    for (let retries = 0; retries < 5; retries += 1) {
+      try {
+        const snapshot = await db.collection('AllGameEvents')
+          .where('GameId', '==', gameId)
+          .get();
 
 
-      let content = "";
-      snapshot.forEach(doc => {
-        const eventData = doc.data();
-        let line = `PinballEventType:${eventData.PinballEventType} `;
+        let content = "";
+        snapshot.forEach(doc => {
+          const eventData = doc.data();
+          let line = `PinballEventType:${eventData.PinballEventType} `;
 
-        // Add data fields from eventData.data
-        if (eventData.data) {
-          for (const [key, value] of Object.entries(eventData.data)) {
-            line += `${key}:${value} `;
+          // Add data fields from eventData.data
+          if (eventData.data) {
+            for (const [key, value] of Object.entries(eventData.data)) {
+              line += `${key}:${value} `;
+            }
           }
-        }
-        content += line.trim() + "\n";
-      });
+          content += line.trim() + "\n";
+        });
 
 
-      // Construct a request and send it to the model API.
-      const prompt = promptRef("summary");
-      const resp = await prompt.generate({ input: { gameLog: content } });
-      // console.log(resp.output())
+        // Construct a request and send it to the model API.
+        const prompt = promptRef("summary");
+        const resp = await prompt.generate({ input: { gameLog: content } });
+        // console.log(resp.output())
 
-      // Store the analysis in Firestore
-      const analysis = resp.output();
-      const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
-      await gameAnalysesRef.set({
-        ...analysis,
-        insertionTimestamp: FieldValue.serverTimestamp() // Add timestamp 
-      });
+        // Store the analysis in Firestore
+        const analysis = resp.output();
+        const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
+        await gameAnalysesRef.set({
+          ...analysis,
+          insertionTimestamp: FieldValue.serverTimestamp() // Add timestamp 
+        });
 
 
-      return analysis;
-    } catch (error) {
-      console.error('Error fetching events:', error);
+        return analysis;
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        console.log('On retry #', retries);
+      }
     }
   }
 )

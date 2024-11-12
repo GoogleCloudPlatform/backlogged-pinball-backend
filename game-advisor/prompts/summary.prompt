@@ -1,5 +1,5 @@
 ---
-model: ollama/llama3.1:70b 
+model: ollama/llama3.1:70b
 config:
   temperature: 0.99
 input:
@@ -20,7 +20,7 @@ You should provide a short 5-15 word headline summarizing the game,
 a more-indepth analysis of the game, 3-5 tips for how the player could 
 improve their performance, and a letter grade for the overall performance.
 
-An A game will have at least 10 loops or ramps. An A+ game will have 10 of each.
+An A game will have at least 6 loops or ramps.
 
 Your tips should reference at least one of the following facts:
 
@@ -29,7 +29,7 @@ Your tips should reference at least one of the following facts:
 * The bonus for consecutive shots is steep at first, but grows more slowly over time
 * Slingshots are worth small points that never scale up, and they eat up a lot of time.
 
-Any game with a Multiball is deserving of at least an A.
+In general, 200,000 points is worthy of an A+. 150,000 points is worthy of an A. 100,000 points is worthy of an A-. 75,000 points is worthy of a B, 50,000 is a B-. Players should only get an F for less than 5,000 points.
 
 Do not output markdown or any explanation or preamble.  Simply output the JSON in the schema to be specified below.
 
