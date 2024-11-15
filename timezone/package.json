@@ -1,0 +1,12 @@
+{
+    "name": "unixtime-api",
+    "version": "1.0.0",
+    "description": "API to return the current UTC time as a Unix timestamp",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2"
+    }
+  }
