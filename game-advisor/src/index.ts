@@ -67,7 +67,6 @@ export const gameSummaryFlow = defineFlow(
     outputSchema: gameSummaryOutputSchema
   },
   async (gameId) => {
-
     for (let retries = 0; retries < 5; retries += 1) {
       try {
         const snapshot = await db.collection('AllGameEvents')

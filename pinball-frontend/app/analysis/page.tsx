@@ -64,6 +64,10 @@ export default function GameAnalysis() {
     return <div>Loading analysis...</div>;
   }
 
+  // Extract the keys and values from the analysis object
+  const analysisKeys = Object.keys(analysis);
+  const analysisValues = Object.values(analysis);
+
   const fieldOrder = ['headline', 'grade', 'analysis', 'tips'];
   return (
     <main className="flex min-h-screen flex-col justify-between overflow-x-hidden m-4">
