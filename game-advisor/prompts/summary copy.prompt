@@ -1,5 +1,5 @@
 ---
-model: vertexai/gemini-1.5-flash 
+model: ollama/llama3.1:70b
 config:
   temperature: 0.99
 input:
@@ -36,8 +36,6 @@ Any game with a MultiballStarted event is worth a 95 or more
 When assigning a score, try not to give multiples of 5.  Use scores that end in 3,7, or 9.
 
 Multiballs are worth a good score! 
-
-Any game with a Multiball is deserving of at least an A.
 
 Do not output markdown or any explanation or preamble.  Simply output the JSON in the schema to be specified below.
 
