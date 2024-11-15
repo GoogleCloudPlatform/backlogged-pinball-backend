@@ -118,16 +118,6 @@ const twoDigitPad = (number: number) => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 p-2" style={{ borderWidth: '2px', borderColor: '#FBBC04' }}>
             <MetricsTile
-              title="Bug Count"
-              value={bugCount}
-              color="#EA4335"
-            />
-            <MetricsTile
-              title="PR Count"
-              value={prCount}
-              color="#4285F4"
-            />
-            <MetricsTile
               title="Game Events"
               value={gameEvents.length}
             />

@@ -10,7 +10,7 @@ output:
     headline: string
     analysis: string
     tips(array, tips for improving gameplay): string
-    grade(enum, letter grade for gameplay performance): ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C', 'D', 'F']
+    grade: integer, score from 1 to 100
 
 ---
 
@@ -20,16 +20,20 @@ You should provide a short 5-15 word headline summarizing the game,
 a more-indepth analysis of the game, 3-5 tips for how the player could 
 improve their performance, and a letter grade for the overall performance.
 
-An A game will have at least 6 loops or ramps.
-
 Your tips should reference at least one of the following facts:
 
 * Players score more points by hitting the same shot multiple times in a row without draining.
+* The total number of drains does not matter.  Drains after a multiball has started are to be expected, but the points are overall worth it.
 * The best strategy for scoring is to increase the multiplier for ramps or loops by hitting them several times in a row without draining
 * The bonus for consecutive shots is steep at first, but grows more slowly over time
 * Slingshots are worth small points that never scale up, and they eat up a lot of time.
+* The player can start a multiball by hitting the same shot 3 times during the game.
 
-In general, 200,000 points is worthy of an A+. 150,000 points is worthy of an A. 100,000 points is worthy of an A-. 75,000 points is worthy of a B, 50,000 is a B-. Players should only get an F for less than 5,000 points.
+In general, 150,000 points is worthy of a grade of 95. 100,000 points is worthy of grade of 90. 75,000 points is worthy of an 85. 50,000 points is worthy of an 80, 25,000 is a 75. Players should only get a 50 or lower for less than 5,000 points.
+
+Any game with a MultiballStarted event is worth a 95 or more
+
+Multiballs are worth a good score! 
 
 Do not output markdown or any explanation or preamble.  Simply output the JSON in the schema to be specified below.
 

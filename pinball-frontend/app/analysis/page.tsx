@@ -76,7 +76,7 @@ export default function GameAnalysis() {
                 <td className="px-4 py-2 font-bold">{key}</td>
                 <td className="px-4 py-2">
                   {typeof analysis[key] === 'object' ? (
-                    <pre className="text-sm whitespace-pre-wrap">{JSON.stringify(analysis[key], null, 2)}</pre>
+                    <pre className="text-xl whitespace-pre-wrap">{JSON.stringify(analysis[key], null, 2)}</pre>
                   ) : (
                     analysis[key]
                   )}
