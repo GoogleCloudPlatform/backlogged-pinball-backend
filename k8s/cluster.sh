@@ -1,5 +1,6 @@
 gcloud config set project backlogged-ai
 export PROJECT_ID=$(gcloud config get project)
+export PROJECT_NUMBER=<PROJECT_NUMBER>
 export REGION=us-west4
 export ZONE=us-west4-a
 export CLUSTER_NAME=gemma
@@ -28,3 +29,11 @@ gcloud beta container --project=${PROJECT_ID} node-pools create "gpu" \
 kubectl create secret generic hf-secret \
 --from-literal=hf_api_token=$HF_TOKEN \
 --dry-run=client -o yaml | kubectl apply -f -
+
+kubectl create serviceaccount genkit \
+    --namespace default
+
+gcloud projects add-iam-policy-binding projects/backlogged-ai \
+    --role=roles/firebase.admin \
+    --member=principal://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/backlogged-ai.svc.id.goog/subject/ns/default/sa/genkit \
+    --condition=None
