@@ -4,7 +4,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@genkit-ai/ai": "^0.5.13",
-    "@genkit-ai/core": "^0.5.13",
+    "@genkit-ai/core": "^1.0.0",
     "@genkit-ai/dotprompt": "^0.5.13",
     "@genkit-ai/flow": "^0.5.13",
     "@genkit-ai/vertexai": "^0.5.13",
