@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@genkit-ai/express": "^1.1.0",
+    "@genkit-ai/vertexai": "^1.1.0",
+    "axios": "^1.8.2",
+    "genkit": "^1.1.0",
+    "google-auth-library": "^9.15.1"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "nodemon --watch src -e ts,prompt --exec \"tsc && node dist/index.js\"",
+    "test": "node --test",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "eslint": "^8.57.1",
+    "genkit-cli": "^1.1.0",
+    "globals": "^16.0.0",
+    "gts": "^6.0.2",
+    "nodemon": "^3.1.9",
+    "typescript-eslint": "^8.26.1"
+  }
+}

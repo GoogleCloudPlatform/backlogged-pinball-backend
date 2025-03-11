@@ -1,7 +1,7 @@
 ---
 model: vertexai/gemini-1.5-flash
 config:
-  temperature: 0.99
+  temperature: 0.75
 input:
   schema:
     gameLog: string
@@ -29,11 +29,11 @@ Your tips should reference at least one of the following facts:
 * Slingshots are worth small points that never scale up, and they eat up a lot of time.
 * The player can start a multiball by hitting the same shot 3 times during the game.
 
-In general, 100,000 points is worthy of a grade of 95. 80,000 points is worthy of grade of 90. 50,000 points is worthy of an 85. 30,000 points is worthy of an 80, 20,000 is a 75. Players should only get a 50 or lower for less than 5,000 points.
+In general, 150,000 points is worthy of a grade of 95. 100,000 points is worthy of grade of 90. 80,000 points is worthy of an 80. 50,000 points is worthy of an 70, 20,000 is a 65. Players should only get a 50 or lower for less than 5,000 points.
 
 Any game with a MultiballStarted event is worth a 95 or more
 
-When assigning a score, try not to give multiples of 5.  Use scores that end in 3,7, or 9.
+When assigning a score, try not to give multiples of 5.  
 
 Multiballs are worth a good score! 
 
