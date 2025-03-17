@@ -1,7 +1,7 @@
 import { GoogleAuth } from 'google-auth-library';
 import axios from 'axios';
 
-export async function sanitizeUserPrompt(text: string) {
+export async function sanitizeUserPrompt(text: string, template: string = 'strict') {
   try {
     const auth = new GoogleAuth();
     const client = await auth.getClient();
@@ -11,7 +11,6 @@ export async function sanitizeUserPrompt(text: string) {
 
     // Build the URL from configurable project ID, model ID, and location
     const project = 'backlogged-ai';
-    const template = 'dwf-1738786160';
     const location = 'us-central1';
 
     const url = `https://modelarmor.${location}.rep.googleapis.com/v1/projects/${project}/locations/${location}/templates/${template}:sanitizeUserPrompt`;

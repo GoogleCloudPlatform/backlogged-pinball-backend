@@ -3,6 +3,7 @@ import { genkit } from 'genkit';
 import { initializeFilterAndRespondFlow } from './flows/filterAndRespond';
 import {startFlowServer} from '@genkit-ai/express';
 import { initializeProvidePromptFlow } from './flows/providePrompt';
+import { initializeFilterSuggestedPromptFlow } from './flows/filterSuggestedPrompt';
 
 const ai = genkit({
     plugins: [
@@ -13,12 +14,15 @@ const ai = genkit({
 
   const filterAndRespondFlow = initializeFilterAndRespondFlow(ai);
   const providePromptFlow = initializeProvidePromptFlow(ai);
+  const filterSuggestedPromptFlow = initializeFilterSuggestedPromptFlow(ai);
+
 
  startFlowServer(
     {
         flows: [
             filterAndRespondFlow,
-            providePromptFlow
+            providePromptFlow,
+            filterSuggestedPromptFlow
         ]
     }
  )

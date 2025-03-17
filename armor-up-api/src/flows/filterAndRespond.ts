@@ -8,6 +8,7 @@ import {
 import { sanitizeUserPrompt } from "../services/modelArmor";
 
 import { ModelArmorResponse, MatchState } from "../types/ModelArmorTypes";
+import { PubSub } from "@google-cloud/pubsub";
 
 export const initializeFilterAndRespondFlow = (ai: Genkit) =>
   ai.defineFlow(
@@ -33,6 +34,19 @@ export const initializeFilterAndRespondFlow = (ai: Genkit) =>
         });
         aiResponse = result.text;
       }
+
+      const pubsub = new PubSub();
+      const topic = pubsub.topic("prompts-to-machine");
+      const dataBuffer = Buffer.from(
+        JSON.stringify({
+          PinballReactionType: "ProcessedPrompt",
+          Prompt: input.prompt,
+          Response: aiResponse,
+          PassedFilter: safe,
+        })
+      );
+
+      await topic.publishMessage({ data: dataBuffer });
 
       return {
         generatedText: aiResponse,
