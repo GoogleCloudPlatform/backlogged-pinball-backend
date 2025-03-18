@@ -29,10 +29,9 @@ export const initializeFilterAndRespondFlow = (ai: Genkit) =>
       }
 
       if (safe) {
-        const result = await ai.generate({
-          prompt: input.prompt,
-        });
-        aiResponse = result.text;
+        const systemPrompt = ai.prompt('generateFriendlyText');
+        const modelResponse = await systemPrompt({userPrompt: input.prompt});
+        aiResponse = modelResponse.text;
       }
 
       const pubsub = new PubSub();
@@ -49,6 +48,7 @@ export const initializeFilterAndRespondFlow = (ai: Genkit) =>
       await topic.publishMessage({ data: dataBuffer });
 
       return {
+        originalPrompt: input.prompt,
         generatedText: aiResponse,
         passedFilter: safe,
         modelArmorResponse: modelArmorResponse,

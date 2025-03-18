@@ -10,6 +10,7 @@ const ai = genkit({
       vertexAI({location: 'us-central1'}),
     ],
     model: gemini20Flash001,
+    promptDir: './src/prompts'
   });
 
   const filterAndRespondFlow = initializeFilterAndRespondFlow(ai);

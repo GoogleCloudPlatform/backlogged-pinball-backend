@@ -48,6 +48,7 @@ export const initializeFilterSuggestedPromptFlow = (ai: Genkit) =>
       }
 
       return {
+        originalPrompt: input.prompt,
         passedFilter: safe,
         modelArmorResponse: modelArmorResponse,
       };
