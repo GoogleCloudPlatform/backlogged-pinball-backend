@@ -24,7 +24,6 @@ export const initializeFilterSuggestedPromptFlow = (ai: Genkit) =>
         await sanitizeUserPrompt(input.prompt, "loose")
       );
       let safe = true;
-      let aiResponse = "";
 
       if (
         modelArmorResponse.sanitizationResult.filterMatchState ===
