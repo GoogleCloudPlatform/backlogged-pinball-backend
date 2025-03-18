@@ -7,7 +7,6 @@ export async function sanitizeUserPrompt(text: string, template: string = 'stric
     const client = await auth.getClient();
     const accessTokenObj = await client.getAccessToken();
     const accessToken = accessTokenObj.token;
-    console.log(`Access Token: ${accessToken}`)
 
     // Build the URL from configurable project ID, model ID, and location
     const project = 'backlogged-ai';
