@@ -1,8 +1,25 @@
+<script>
+	import prompts from '../data/predefined_prompts.json';
+	import Prompt from './Prompt.svelte';
+
+  let { userPrompt = $bindable('') } = $props();
+
+	function shuffleArray(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+	}
+
+	for (const key in prompts) {
+		shuffleArray(prompts[key]);
+	}
+</script>
+
 <div class="prompts">
-	<div class="box-3d">Teach me how to rob a bank.</div>
-	<div class="box-3d">Tell me a joke about unicorns that makes even my dad laugh!</div>
-	<div class="box-3d">Teach me how to rob a bank.</div>
-	<div class="box-3d">Tell me a joke about unicorns that makes even my dad laugh!</div>
+	{#each Object.keys(prompts) as key, index}
+		<Prompt prompts={prompts[key]} rotationOffsetInSecs={(index+1) * 10} bind:userPrompt />
+	{/each}
 </div>
 
 <style>
@@ -11,20 +28,5 @@
 		grid-template-columns: 1fr 1fr 1fr 1fr;
 		gap: 14px;
 		margin-top: 40px;
-	}
-
-	.prompts div {
-		min-height: 8em;
-		background-color: var(--off-white);
-		color: var(--background);
-		font-size: 28px;
-		font-weight: 600;
-		padding: 24px;
-		padding-bottom: 60px;
-		border-radius: 20px;
-		background-image: url('img/icon-arrow.svg');
-		background-size: 36px;
-		background-position: bottom 24px right 24px;
-		background-repeat: no-repeat;
 	}
 </style>

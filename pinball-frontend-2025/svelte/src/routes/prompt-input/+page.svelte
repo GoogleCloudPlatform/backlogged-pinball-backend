@@ -1,5 +1,7 @@
 <script>
   import Prompts from '$lib/Prompts.svelte';
+
+  let userPrompt = $state('');
 </script>
 
 <header>
@@ -11,10 +13,10 @@
 <main>
 	<h1 class="text-3d">Submit a prompt to test Model Armor</h1>
 	<form action="#" class="box-3d">
-		<input type="text" placeholder="What can I help you with?" id="promt-input-field" />
+		<input type="text" placeholder="What can I help you with?" id="promt-input-field" bind:value="{userPrompt}" />
 		<button class="arrow" aria-label="promt-input-field"></button>
 	</form>
-  <Prompts/>
+  <Prompts bind:userPrompt />
 
 </main>
 
