@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Armor Up Pinball</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-image: url('img/bg-black.svg');
+    }
+
+    .pages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: auto;
+      width:fit-content;
+      justify-items: center;
+      align-items: center;
+    }
+
+    .pages div {
+      text-align: center;
+      width: fit-content;
+      height:fit-content;
+      vertical-align: middle;
+    }
+
+    .pages img {
+      max-width: 20em;
+      max-height: 20em;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="text-3d">Welcome! Choose a page:</h1>
+  <div class="pages">
+    <div>
+      <a href="prompt-input.html" class="how-it-works">
+        <img src="img/thumb-input.png">
+        <br>
+        Prompt Input
+      </a>
+    </div>
+    <div>
+      <a href="prompt-echo.html" class="how-it-works">
+        <img src="img/thumb-echo.png">
+        <br>
+        Prompt Echo
+      </a>
+    </div>
+  </div>
+</body>

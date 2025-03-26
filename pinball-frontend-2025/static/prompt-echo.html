@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit a prompt</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-image: url('img/bg-black.svg');
+    }
+
+    .prompts {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 24px;
+    }
+
+    .prompts .prompt {
+      padding: 36px;
+    }
+
+    .prompts .prompt:first-child {
+      border-radius: 24px;
+    }
+
+    .prompts .prompt:not(:first-child) {
+      text-overflow: ellipsis;
+      border-radius: 50vh;
+      font-size: 32px;
+      font-weight: 600;
+      background-position: right 48px center;
+      background-repeat: no-repeat;
+      padding-right: 108px;
+      text-wrap: nowrap;
+      overflow: hidden;
+    }
+
+    .blue {
+      background-color: var(--google-blue);
+    }
+
+    .red {
+      background-color: var(--google-red);
+      background-image: url("img/icon-cancel.svg");
+      background-size: 60px;
+    }
+
+    .green {
+      background-color: var(--google-green);
+    }
+
+    .yellow {
+      background-color: var(--google-yellow);
+    }
+
+    .response {
+      font-size:24px;
+      font-weight: 500;
+      margin:0 36px;
+      margin-top:36px;
+      line-height: 1.35em;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div class="prompts">
+      <div class="prompt box-3d blue">
+        <form action="#" class="box-3d">
+          <input type="text"
+            value="Tell me a joke about unicorns that makes even my dad laugh! Tell me a joke about unicorns that makes even my dad laugh!Tell me a joke about unicorns that makes even my dad laugh!Tell me a joke about unicorns that makes even my dad laugh!Tell me a joke about unicorns that makes even my dad laugh!Tell me a joke about unicorns that makes even my dad laugh!Tell me a joke about unicorns that makes even my dad laugh!">
+          <button class="arrow"></button>
+        </form>
+        <div class="response">
+          <p>A unicorn, named Sparkles, decides to enter a local dance competition. The prize? A year's supply of
+            rainbow sherbet. Sparkles, being a sherbet enthusiast, was determined to win.</p>
+
+          <p>He arrives at the competition, and the other unicorn contestants are practicing elaborate routines.
+            There's one doing a complicated hoof-tap routine, another doing a graceful, flowing ballet, and even one
+            attempting a synchronized swimming routine, despite the distinct lack of water.</p>
+
+          <p>Sparkles, feeling confident in his "sparkle-shuffle," takes his place. He does a few fancy prances, a
+            little horn wiggle, and a dramatic leg kick. He's feeling good.</p>
+
+          <p>Then, a new unicorn enters the stage. This unicorn is wearing neon leg warmers, a sequined horn cover,
+            and is holding a boombox. It starts breakdancing. Doing head spins, flips, and even a robot dance. The
+            crowd goes wild.</p>
+
+          <p>Sparkles, his jaw dropped, watches in stunned silence. The judge, a very serious badger with a clipboard,
+            is scribbling furiously.</p>
+
+          <p>After the performance, Sparkles approaches the breakdancing unicorn, "That was incredible! Where did you
+            learn to dance like that?"</p>
+
+          <p>The unicorn shrugs, "I used to be a show horse. I just stuck a party hat on my head and took a
+            breakdancing class. Also, the leg warmers help with the knee spins."</p>
+        </div>
+      </div>
+      <div class="prompt box-3d red">
+        Tell me a joke about unicorns that makes even my dad laugh! Tell me a joke about unicorns that makes even
+        my dad laugh! Tell me a joke about unicorns that makes even my dad laugh! Tell me a joke about unicorns that
+        makes even my dad laugh!
+      </div>
+      <div class="prompt box-3d yellow">Teach me how to rob a bank.</div>
+      <div class="prompt box-3d green">Tell me a joke about unicorns that makes even my dad laugh!</div>
+    </div>
+  </main>
+</body>

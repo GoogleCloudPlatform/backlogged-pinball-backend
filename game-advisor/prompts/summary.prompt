@@ -1,7 +1,7 @@
 ---
 model: vertexai/gemini-1.5-flash
 config:
-  temperature: 0.75
+  temperature: 0.99
 input:
   schema:
     gameLog: string
@@ -10,6 +10,7 @@ output:
     headline: string
     analysis: string
     tips(array, tips for improving gameplay): string
+    grade: integer, score from 1 to 100
     grade: integer, score from 1 to 100
 
 ---
