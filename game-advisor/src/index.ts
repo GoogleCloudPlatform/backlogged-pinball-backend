@@ -22,6 +22,7 @@ import { ollama } from 'genkitx-ollama'
 import { dotprompt, promptRef } from '@genkit-ai/dotprompt';
 import { initializeApp, applicationDefault } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 
 const OLLAMA_ADDRESS = process.env.OLLAMA_ADDRESS || 'http://localhost:8080';
 
@@ -67,6 +68,7 @@ export const gameSummaryFlow = defineFlow(
     outputSchema: gameSummaryOutputSchema
   },
   async (gameId) => {
+
     for (let retries = 0; retries < 5; retries += 1) {
       try {
         const snapshot = await db.collection('AllGameEvents')
@@ -89,6 +91,26 @@ export const gameSummaryFlow = defineFlow(
         });
 
 
+        // Construct a request and send it to the model API.
+        const prompt = promptRef("summary");
+        const resp = await prompt.generate({ input: { gameLog: content } });
+        // console.log(resp.output())
+
+        // Store the analysis in Firestore
+        const analysis = resp.output();
+        const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
+        await gameAnalysesRef.set({
+          ...analysis,
+          insertionTimestamp: FieldValue.serverTimestamp() // Add timestamp 
+        });
+
+
+        return analysis;
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        console.log('On retry #', retries);
+      }
+    }
         // Construct a request and send it to the model API.
         const prompt = promptRef("summary");
         const resp = await prompt.generate({ input: { gameLog: content } });
