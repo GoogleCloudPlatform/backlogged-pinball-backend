@@ -8,7 +8,7 @@ import {
 import { sanitizeUserPrompt } from "../services/modelArmor";
 
 import { ModelArmorResponse, MatchState } from "../types/ModelArmorTypes";
-import { PubSub } from "@google-cloud/pubsub";
+import { Firestore, FieldValue } from "@google-cloud/firestore";
 
 export const initializeFilterAndRespondFlow = (ai: Genkit) =>
   ai.defineFlow(
@@ -24,34 +24,33 @@ export const initializeFilterAndRespondFlow = (ai: Genkit) =>
       let safe = true;
       let aiResponse = "";
 
-      if (modelArmorResponse.sanitizationResult.filterMatchState === MatchState.MATCH_FOUND) {
+      if (
+        modelArmorResponse.sanitizationResult.filterMatchState ===
+        MatchState.MATCH_FOUND
+      ) {
         safe = false;
       }
 
       if (safe) {
-        const systemPrompt = ai.prompt('generateFriendlyText');
-        const modelResponse = await systemPrompt({userPrompt: input.prompt});
+        const systemPrompt = ai.prompt("generateFriendlyText");
+        const modelResponse = await systemPrompt({ userPrompt: input.prompt });
         aiResponse = modelResponse.text;
       }
 
-      const pubsub = new PubSub();
-      const topic = pubsub.topic("prompts-to-machine");
-      const dataBuffer = Buffer.from(
-        JSON.stringify({
-          PinballReactionType: "ProcessedPrompt",
-          Prompt: input.prompt,
-          Response: aiResponse,
-          PassedFilter: safe,
-        })
-      );
+      const firestore = new Firestore();
+      const collection = firestore.collection("ProcessedPrompts");
+      const timestamp  = FieldValue.serverTimestamp();
 
-      await topic.publishMessage({ data: dataBuffer });
-
-      return {
+      const returnObject = {
         originalPrompt: input.prompt,
         generatedText: aiResponse,
         passedFilter: safe,
         modelArmorResponse: modelArmorResponse,
+        timestamp: timestamp,
       };
+
+      await collection.add(returnObject);
+
+      return returnObject;
     }
   );
