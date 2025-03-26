@@ -2,6 +2,7 @@
   "dependencies": {
     "@genkit-ai/express": "^1.1.0",
     "@genkit-ai/vertexai": "^1.1.0",
+    "@google-cloud/firestore": "^7.11.0",
     "@google-cloud/pubsub": "^4.10.0",
     "axios": "^1.8.2",
     "genkit": "^1.1.0",

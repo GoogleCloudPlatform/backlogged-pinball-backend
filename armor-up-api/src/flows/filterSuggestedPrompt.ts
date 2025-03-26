@@ -10,7 +10,7 @@ import {
 import { sanitizeUserPrompt } from "../services/modelArmor";
 
 import { ModelArmorResponse, MatchState } from "../types/ModelArmorTypes";
-import { PubSub } from "@google-cloud/pubsub";
+import { Firestore, FieldValue } from "@google-cloud/firestore";
 
 export const initializeFilterSuggestedPromptFlow = (ai: Genkit) =>
   ai.defineFlow(
@@ -33,17 +33,15 @@ export const initializeFilterSuggestedPromptFlow = (ai: Genkit) =>
       }
 
       if (safe) {
-        // Send a pubsub message to the topic prompts-to-machine containing the text of the 'safe' prompt
-        const pubsub = new PubSub();
-        const topic = pubsub.topic("prompts-to-machine");
-        const dataBuffer = Buffer.from(
-          JSON.stringify({
-            PinballReactionType: "SuggestedPrompt",
-            Prompt: input.prompt,
-          })
-        );
+        const firestore = new Firestore();
+        const collection = firestore.collection("UserPrompts");
+        const timestamp = FieldValue.serverTimestamp();
 
-        await topic.publishMessage({ data: dataBuffer });
+        await collection.add({
+          prompt: input.prompt,
+          timestamp: timestamp,
+          used: false
+        });
       }
 
       return {
