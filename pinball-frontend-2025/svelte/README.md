@@ -36,3 +36,7 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+
+# Licenses
+Spinner animation from https://github.com/n3r4zzurr0/svg-spinners (MIT license)

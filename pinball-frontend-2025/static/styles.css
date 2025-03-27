@@ -9,7 +9,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --background: #0f0e13;
+  --black: #0f0e13;
   --dark-grey: #303239;
   --grey: #666666;
   --light-grey: #bebebe;
@@ -29,7 +29,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--background);
+  background-color: var(--black);
   color: var(--white);
   font-size: 20px;
   font-weight:500;
@@ -51,14 +51,14 @@ h1 {
 }
 
 .box-3d {
-  border: 2px solid var(--background);
-  box-shadow: 1px 2px 0px 2px var(--background);
+  border: 2px solid var(--black);
+  box-shadow: 1px 2px 0px 2px var(--black);
 }
 
 .text-3d {
   paint-order: stroke fill;
-  -webkit-text-stroke: 0.08em var(--background);
-  text-shadow: 0.08em 0.08em 0px var(--background);
+  -webkit-text-stroke: 0.08em var(--black);
+  text-shadow: 0.08em 0.08em 0px var(--black);
 }
 
 form {
@@ -78,7 +78,7 @@ input[type="text"] {
   font-weight: 600;
   font-family: inherit;
   outline: none;
-  color:var(--background);
+  color:var(--black);
 }
 
 input[type="text"]::placeholder {

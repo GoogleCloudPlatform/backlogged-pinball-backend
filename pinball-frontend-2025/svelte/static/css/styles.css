@@ -9,7 +9,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --background: #0f0e13;
+  --black: #0f0e13;
   --dark-grey: #303239;
   --grey: #666666;
   --light-grey: #bebebe;
@@ -24,12 +24,14 @@
   --google-yellow-dark: #e37b24;
   --google-green-dark: #1a6831;
   --google-red-dark: #c5221f;
+
+  --inactive-grey: color-mix(in lab, var(--off-white), var(--black));
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--background);
+  background-color: var(--black);
   color: var(--white);
   font-size: 20px;
   font-weight: 500;
@@ -53,53 +55,12 @@ h1 {
 }
 
 .box-3d {
-  border: 2px solid var(--background);
-  box-shadow: 1px 2px 0px 2px var(--background);
+  border: 2px solid var(--black);
+  box-shadow: 1px 2px 0px 2px var(--black);
 }
 
 .text-3d {
   paint-order: stroke fill;
-  -webkit-text-stroke: 0.08em var(--background);
-  text-shadow: 0.08em 0.08em 0px var(--background);
-}
-
-form {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 28px;
-  padding-left: 48px;
-  background-color: var(--white);
-  border-radius: 50vh;
-}
-input[type="text"] {
-  width: 100%;
-  border: none;
-  text-overflow: ellipsis;
-  font-size: 32px;
-  font-weight: 600;
-  font-family: inherit;
-  outline: none;
-  color: var(--background);
-}
-
-input[type="text"]::placeholder {
-  color: var(--light-grey);
-}
-
-button.arrow {
-  width: 4em;
-  height: 4em;
-  background: transparent;
-  background-image: url("../img/icon-arrow.svg");
-  background-size: contain;
-  background-position: center center;
-  background-repeat: no-repeat;
-  border: none !important;
-  outline: none;
-  /* background-blend-mode allows us to fade the background image into the background color */
-  background-blend-mode: lighten;
-  /* TODO: replace background color with a "color-mix" */
-  background-color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
+  -webkit-text-stroke: 0.08em var(--black);
+  text-shadow: 0.08em 0.08em 0px var(--black);
 }
