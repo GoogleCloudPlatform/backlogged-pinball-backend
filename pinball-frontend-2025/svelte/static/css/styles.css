@@ -35,7 +35,7 @@ body {
   color: var(--white);
   font-size: 20px;
   font-weight: 500;
-  background-image: url(../img/bg-black.svg);
+  background-image: url(/img/bg-black.svg);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

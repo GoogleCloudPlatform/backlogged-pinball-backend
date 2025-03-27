@@ -95,7 +95,7 @@
 
 	.red {
 		background-color: var(--google-red);
-		background-image: url('img/icon-cancel.svg');
+		background-image: url('/img/icon-cancel.svg');
 		background-size: 60px;
 	}
 

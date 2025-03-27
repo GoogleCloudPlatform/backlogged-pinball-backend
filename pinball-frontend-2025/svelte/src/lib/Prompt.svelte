@@ -91,7 +91,7 @@
 	}
 
 	div.arrow {
-		background-image: url('img/icon-arrow.svg');
+		background-image: url('/img/icon-arrow.svg');
 		background-size: 36px;
 		background-repeat: no-repeat;
 		position: absolute;

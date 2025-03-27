@@ -18,7 +18,7 @@
 <svelte:head>
 	<style>
 		body {
-			background-image: url('img/bg-color.svg');
+			background-image: url('/img/bg-color.svg');
 		}
 	</style>
 </svelte:head>
@@ -50,7 +50,7 @@
 	.cloud-logo {
 		width: 50px;
 		height: 40px;
-		background-image: url('img/cloud-logo.svg');
+		background-image: url('/img/cloud-logo.svg');
 		background-size: contain;
 		background-position: center center;
 		background-repeat: no-repeat;

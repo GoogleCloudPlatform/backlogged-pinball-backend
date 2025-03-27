@@ -112,7 +112,7 @@
 		width: 4em;
 		height: 4em;
 		background-color: transparent;
-		background-image: url('../img/icon-arrow.svg');
+		background-image: url('/img/icon-arrow.svg');
 		background-size: contain;
 		background-position: center center;
 		background-repeat: no-repeat;
@@ -130,7 +130,7 @@
 	}
 
 	:global(#promptForm.safe button) {
-		background-image: url('../img/icon-check.svg');
+		background-image: url('/img/icon-check.svg');
 	}
 
 	:global(#promptForm.unsafe) {
@@ -138,7 +138,7 @@
 	}
 
 	:global(#promptForm.unsafe button) {
-		background-image: url('../img/icon-cancel.svg');
+		background-image: url('/img/icon-cancel.svg');
 	}
 
   :global(#promptForm.working) {
@@ -149,6 +149,6 @@
 	}
 
 	:global(#promptForm.working button) {
-		background-image: url('../img/spinner.svg');
+		background-image: url('/img/spinner.svg');
 	}
 </style>
