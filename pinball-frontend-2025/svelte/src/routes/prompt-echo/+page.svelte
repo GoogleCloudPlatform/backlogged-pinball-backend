@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 
 	const firebaseConfig = {
-		apiKey: 'AIzaSyAzyVzLvTex4t1EFAaOO3rL_IaYRyTzAbM',
+		apiKey: 'AIzaSyAzyVzLvTex4t1EFAaOO3rL_IaYRyTzAbM',  // Firebase Browser key
 		authDomain: 'backlogged-ai.firebaseapp.com',
 		projectId: 'backlogged-ai',
 		storageBucket: 'backlogged-ai.firebasestorage.app',
