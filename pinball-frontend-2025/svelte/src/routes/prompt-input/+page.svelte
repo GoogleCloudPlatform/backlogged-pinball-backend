@@ -1,5 +1,5 @@
 <script>
-	import PromptForm from '$lib/PromptForm.svelte';
+	import PromptForm from './PromptForm.svelte';
 
 	let userPrompt = $state('');
 </script>

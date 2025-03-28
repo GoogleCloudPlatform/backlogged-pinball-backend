@@ -1,5 +1,5 @@
 <script>
-	import prompts from '../data/predefined_prompts.json';
+	import prompts from '$lib/data/predefined_prompts.json';
 	import Prompt from './Prompt.svelte';
 
   let { clickPrepopulatedPrompt } = $props();
