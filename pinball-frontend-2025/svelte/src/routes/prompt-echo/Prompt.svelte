@@ -63,6 +63,7 @@
 	}
 
 	.modelArmorResponse {
+    width:40%;
     flex-grow:1;
 		padding: 24px;
     background-color: var(--off-white);
@@ -94,7 +95,7 @@
 	}
 
 	.generatedText {
-		width: 70%;
+    width:60%;
 		background-color: var(--white);
 		padding: 48px;
 	}
