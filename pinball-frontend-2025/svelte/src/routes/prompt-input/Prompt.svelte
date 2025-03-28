@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { derived } from 'svelte/store';
 
-	let { prompts, rotationOffsetInSecs = 0, userPrompt = $bindable('') } = $props();
+	let { prompts, rotationOffsetInSecs = 0, userPrompt = $bindable(''), clickPrepopulatedPrompt } = $props();
 
 	let promptIndex = $state(0);
 	let promptCharacterIndex = $state(0);
@@ -10,8 +10,9 @@
 
 	const formatPrompt = (prompt) => {
 		// words over ~20 chars break the layout so modify them
+    // assume any website will break the layout, so modify it too.
 		const websitePattern = /(https?:\/\/|www\.)([a-zA-Z0-9.-]+)(\.[a-zA-Z]{2,})+(\/\S*)?/g;
-		prompt = prompt.replace(websitePattern, '[malicious_site]');
+		prompt = prompt.replace(websitePattern, '[website]');
 
 		prompt.split(' ').forEach((word, index) => {
 			if (word.length > 20) {
@@ -68,7 +69,7 @@
 	});
 </script>
 
-<a alt="setPrompt" onclick={e => {e.preventDefault(); userPrompt = prompts[promptIndex]; console.log(userPrompt);}}>
+<a alt="setPrompt" onclick={e => {e.preventDefault(); clickPrepopulatedPrompt(prompts[promptIndex])}}>
 <div class="prompt box-3d">
 	{formatPrompt(prompts[promptIndex]).slice(0, promptCharacterIndex)}
 	<div class="arrow" class:inactive={!linkActive}></div>
@@ -79,7 +80,7 @@
 	div.prompt {
 		min-height: 260px;
 		background-color: var(--off-white);
-		color: var(--background);
+		color: var(--black);
 		font-size: 28px;
 		font-weight: 600;
 		padding: 24px;
@@ -90,7 +91,7 @@
 	}
 
 	div.arrow {
-		background-image: url('img/icon-arrow.svg');
+		background-image: url('/img/icon-arrow.svg');
 		background-size: 36px;
 		background-repeat: no-repeat;
 		position: absolute;

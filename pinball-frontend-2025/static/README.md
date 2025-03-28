@@ -1,3 +1,1 @@
-# armorup-pinball-frontend
-
-## TODO: A cloud run service that serves these pages. On various clicks, it calls to the existing cloud run services.
+This folder contains a completely static version of the site; it can be used as a reference when building out the dynamic application which integrates with the backend. That implementation can be found in the `svelte` folder.

@@ -1,29 +1,24 @@
 <script>
-  import Prompts from '$lib/Prompts.svelte';
+	import PromptForm from './PromptForm.svelte';
 
-  let userPrompt = $state('');
+	let userPrompt = $state('');
 </script>
 
 <header>
 	<div class="cloud-logo"></div>
 	<div class="how-it-works">
-		<a class="text-3d box-3d" alt="how it works" href=".">How it works</a>
+		<a class="text-3d box-3d" alt="how it works" onclick="{()=> {alert('TODO!')}}">How it works</a>
 	</div>
 </header>
 <main>
 	<h1 class="text-3d">Submit a prompt to test Model Armor</h1>
-	<form action="#" class="box-3d">
-		<input type="text" placeholder="What can I help you with?" id="promt-input-field" bind:value="{userPrompt}" />
-		<button class="arrow" aria-label="promt-input-field"></button>
-	</form>
-  <Prompts bind:userPrompt />
-
+	<PromptForm bind:userPrompt></PromptForm>
 </main>
 
 <svelte:head>
 	<style>
 		body {
-			background-image: url('img/bg-color.svg');
+			background-image: url('/img/bg-color.svg');
 		}
 	</style>
 </svelte:head>
@@ -55,7 +50,7 @@
 	.cloud-logo {
 		width: 50px;
 		height: 40px;
-		background-image: url('img/cloud-logo.svg');
+		background-image: url('/img/cloud-logo.svg');
 		background-size: contain;
 		background-position: center center;
 		background-repeat: no-repeat;

@@ -1,8 +1,8 @@
 <script>
-	import prompts from '../data/predefined_prompts.json';
+	import prompts from '$lib/data/predefined_prompts.json';
 	import Prompt from './Prompt.svelte';
 
-  let { userPrompt = $bindable('') } = $props();
+  let { clickPrepopulatedPrompt } = $props();
 
 	function shuffleArray(array) {
 		for (let i = array.length - 1; i > 0; i--) {
@@ -18,7 +18,7 @@
 
 <div class="prompts">
 	{#each Object.keys(prompts) as key, index}
-		<Prompt prompts={prompts[key]} rotationOffsetInSecs={(index+1) * 10} bind:userPrompt />
+		<Prompt prompts={prompts[key]} rotationOffsetInSecs={(index+1) * 10} {clickPrepopulatedPrompt} />
 	{/each}
 </div>
 

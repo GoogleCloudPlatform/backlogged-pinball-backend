@@ -2,14 +2,14 @@
 <div class="pages">
 	<div>
 		<a href="prompt-input">
-			<img src="img/thumb-input.png" alt="Prompt input page" />
+			<img src="/img/thumb-input.png" alt="Prompt input page" />
 			<br />
 			Prompt Input
 		</a>
 	</div>
 	<div>
 		<a href="prompt-echo">
-			<img src="img/thumb-echo.png" alt="Prompt input page" />
+			<img src="/img/thumb-echo.png" alt="Prompt input page" />
 			<br />
 			Prompt Echo
 		</a>
