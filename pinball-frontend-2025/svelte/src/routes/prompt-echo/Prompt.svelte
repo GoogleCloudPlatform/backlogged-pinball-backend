@@ -18,12 +18,6 @@
 		<div class="generatedText">
 			<div class="text">
 				{generatedText}
-				{generatedText}
-				{generatedText}
-				{generatedText}
-				{generatedText}
-				{generatedText}
-				{generatedText}
 			</div>
 		</div>
 	</div>
@@ -63,11 +57,11 @@
 	}
 
 	.modelArmorResponse {
-    width:40%;
-    flex-grow:1;
+		width: 40%;
+		flex-grow: 1;
 		padding: 24px;
-    background-color: var(--off-white);
-    color: var(--black);
+		background-color: var(--off-white);
+		color: var(--black);
 	}
 
 	.modelArmorResponse h2 {
@@ -75,9 +69,9 @@
 		font-weight: 600;
 		margin: 0;
 		line-height: 36px;
-    padding-bottom:8px;
-    margin-bottom:24px;
-    border-bottom: 2px solid var(--black);
+		padding-bottom: 8px;
+		margin-bottom: 24px;
+		border-bottom: 2px solid var(--black);
 	}
 
 	.modelArmorResponse h2 img {
@@ -87,15 +81,15 @@
 	}
 
 	.modelArmorResponse .text {
-		font-family: "Geist Mono", monospace;
+		font-family: 'Geist Mono', monospace;
 		font-size: 15px;
 		font-weight: 400;
-    margin-left:18px;
+		margin-left: 18px;
 		white-space: pre-wrap;
 	}
 
 	.generatedText {
-    width:60%;
+		width: 60%;
 		background-color: var(--white);
 		padding: 48px;
 	}
@@ -105,19 +99,19 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		font-size: 22px;
-    font-weight:500;
+		font-weight: 500;
 		line-height: 1.5;
 		text-wrap: wrap;
 		color: var(--black);
-    display: -webkit-box;
-    -webkit-line-clamp: 22;
-    white-space: pre-line;
-    -webkit-box-orient: vertical;  
+		display: -webkit-box;
+		-webkit-line-clamp: 22;
+		white-space: pre-line;
+		-webkit-box-orient: vertical;
 	}
 
-  .red .generatedText {
-    display:none;
-  }
+	.red .generatedText {
+		display: none;
+	}
 
 	.red {
 		background-color: var(--google-red);
