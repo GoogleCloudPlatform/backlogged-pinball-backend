@@ -1,8 +1,22 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+
 	let { originalPrompt, passedFilter, generatedText, modelArmorResponse } = $props();
+
+	const dispatch = createEventDispatcher();
+
+	function handleClick() {
+		dispatch('promote');
+	}
 </script>
 
-<div class="prompt box-3d {passedFilter ? 'green' : 'red'}">
+<div
+	class="prompt box-3d {passedFilter ? 'green' : 'red'}"
+	onclick={handleClick}
+	role="button"
+	tabindex="0"
+	onkeydown={(e) => e.key === 'Enter' && handleClick()}
+>
 	<div class="originalPrompt">
 		<div class="text">
 			{originalPrompt}
@@ -25,6 +39,11 @@
 
 <style>
 	.prompt {
+		cursor: pointer;
+		transition:
+			transform 0.1s ease-in-out,
+			box-shadow 0.1s ease-in-out;
+		position: relative;
 		padding: 36px;
 		border-radius: 60px;
 		font-size: 32px;
@@ -32,6 +51,16 @@
 		background-position: top 24px right 24px;
 		background-repeat: no-repeat;
 		background-size: 60px;
+	}
+
+	.prompt:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	.prompt:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.7);
 	}
 
 	.prompt .text {
@@ -48,12 +77,17 @@
 		display: flex;
 		flex-direction: row;
 		border-radius: 30px;
+		transition:
+			opacity 0.3s ease-in-out,
+			height 0.3s ease-in-out,
+			margin-top 0.3s ease-in-out;
 	}
 
 	.prompt:first-child .responseData {
 		opacity: 1;
 		height: auto;
 		margin-top: 24px;
+		overflow: visible;
 	}
 
 	.modelArmorResponse {
