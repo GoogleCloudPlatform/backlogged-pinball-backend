@@ -30,13 +30,11 @@
 		const subscribe = onSnapshot(q, (snapshot) => {
 			snapshot.docChanges().forEach((change) => {
 				if (change.type === 'added') {
-					// Add the new prompt to the array
-          if(prompts.length == numPrompts){
-            prompts.unshift(change.doc.data());
-            prompts.pop();
-          } else {
-            prompts.push(change.doc.data());
-          }
+					prompts.unshift(change.doc.data());
+
+					if (prompts.length > numPrompts) {
+						prompts.pop();
+					}
 				}
 			});
 		});
