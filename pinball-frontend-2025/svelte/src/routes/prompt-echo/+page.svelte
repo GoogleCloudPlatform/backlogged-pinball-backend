@@ -35,6 +35,7 @@
 						...change.doc.data()
 					};
 					prompts.unshift(newPromptData);
+
 					if (prompts.length > numPrompts) {
 						prompts.pop();
 					}
