@@ -14,12 +14,19 @@
 			Prompt Echo
 		</a>
 	</div>
+	<div>
+		<a href="about">
+			<img src="/img/thumb-about.png" alt="How it works" />
+			<br />
+			About / How it Works
+		</a>
+	</div>
 </div>
 
 <style>
 	.pages {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
 		gap: 12px;
 		margin: auto;
 		width: fit-content;
