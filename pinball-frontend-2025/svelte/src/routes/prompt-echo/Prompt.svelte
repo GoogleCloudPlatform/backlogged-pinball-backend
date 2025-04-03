@@ -87,7 +87,6 @@
 		opacity: 1;
 		height: auto;
 		margin-top: 24px;
-		overflow: visible;
 	}
 
 	.modelArmorResponse {
