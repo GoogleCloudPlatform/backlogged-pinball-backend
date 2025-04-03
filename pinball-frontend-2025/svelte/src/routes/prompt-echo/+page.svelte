@@ -15,7 +15,7 @@
 		measurementId: 'G-DH2T6MKT27'
 	};
 
-	const numPrompts = 10;
+	const numPrompts = 20;
 
 	const prompts = $state([]);
 
@@ -23,14 +23,18 @@
 		// Initialize Firebase
 		const app = initializeApp(firebaseConfig);
 		const db = getFirestore(app);
-		const promptsCollection = await collection(db, 'ProcessedPrompts');
+		const promptsCollection = collection(db, 'ProcessedPrompts');
 
-		const q = await query(promptsCollection, orderBy('timestamp', 'desc'), limit(numPrompts));
+		const q = query(promptsCollection, orderBy('timestamp', 'desc'), limit(numPrompts));
 
-		const subscribe = onSnapshot(q, (snapshot) => {
+		const unsubscribe = onSnapshot(q, (snapshot) => {
 			snapshot.docChanges().forEach((change) => {
 				if (change.type === 'added') {
-					prompts.unshift(change.doc.data());
+					const newPromptData = {
+						id: change.doc.id,
+						...change.doc.data()
+					};
+					prompts.unshift(newPromptData);
 
 					if (prompts.length > numPrompts) {
 						prompts.pop();
@@ -38,13 +42,32 @@
 				}
 			});
 		});
+
+		return () => {
+			unsubscribe();
+		};
 	});
+
+	function promotePrompt(promptToMove) {
+		const index = prompts.findIndex((p) => p.id === promptToMove.id);
+		if (index > 0) {
+			const [movedPrompt] = prompts.splice(index, 1);
+			prompts.unshift(movedPrompt);
+			window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+		}
+	}
 </script>
 
 <main>
 	<div class="prompts">
-		{#each prompts as { originalPrompt, passedFilter, generatedText, modelArmorResponse }}
-			<Prompt {originalPrompt} {passedFilter} {generatedText} {modelArmorResponse}></Prompt>
+		{#each prompts as prompt (prompt.id)}
+			<Prompt
+				originalPrompt={prompt.originalPrompt}
+				passedFilter={prompt.passedFilter}
+				generatedText={prompt.generatedText}
+				modelArmorResponse={prompt.modelArmorResponse}
+				on:promote={() => promotePrompt(prompt)}
+			/>
 		{/each}
 	</div>
 </main>

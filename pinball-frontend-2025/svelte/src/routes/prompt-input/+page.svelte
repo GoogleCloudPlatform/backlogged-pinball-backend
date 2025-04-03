@@ -7,7 +7,7 @@
 <header>
 	<div class="cloud-logo"></div>
 	<div class="how-it-works">
-		<a class="text-3d box-3d" alt="how it works" onclick="{()=> {alert('TODO!')}}">How it works</a>
+		<a class="text-3d box-3d" alt="how it works" href="about">How it works</a>
 	</div>
 </header>
 <main>
