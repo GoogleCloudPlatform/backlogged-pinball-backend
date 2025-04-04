@@ -28,7 +28,7 @@
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"svelte": "^5.0.0",
-		"vite": "^6.0.0"
+		"vite": "^6.2.5"
 	},
 	"dependencies": {
 		"firebase": "^11.5.0"
