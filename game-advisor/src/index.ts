@@ -21,7 +21,8 @@ import { vertexAI } from '@genkit-ai/vertexai';
 import { ollama } from 'genkitx-ollama'
 import { dotprompt, promptRef } from '@genkit-ai/dotprompt';
 import { initializeApp, applicationDefault } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 
 const OLLAMA_ADDRESS = process.env.OLLAMA_ADDRESS || 'http://localhost:8080';
 
@@ -68,27 +69,68 @@ export const gameSummaryFlow = defineFlow(
   },
   async (gameId) => {
 
-    try {
-      const snapshot = await db.collection('AllGameEvents')
-        .where('GameId', '==', gameId)
-        .get();
-  
-      const events: { id: string; }[] = [];
-      snapshot.forEach(doc => {
-        events.push({ id: doc.id, ...doc.data() });
-      });
-      let content = JSON.stringify(events).replace(/"/g, '\\"')
-      
-      // console.log(`stringified log: ${content}`);
+    for (let retries = 0; retries < 5; retries += 1) {
+      try {
+        const snapshot = await db.collection('AllGameEvents')
+          .where('GameId', '==', gameId)
+          .get();
 
-		  // Construct a request and send it to the model API.
-      const prompt = promptRef("summary");
-      const resp = await prompt.generate({input: {gameLog: content}});
-      // console.log(resp.output())
-      return resp.output();
-    } catch (error) {
-    console.error('Error fetching events:', error);
-  }
+
+        let content = "";
+        snapshot.forEach(doc => {
+          const eventData = doc.data();
+          let line = `PinballEventType:${eventData.PinballEventType} `;
+
+          // Add data fields from eventData.data
+          if (eventData.data) {
+            for (const [key, value] of Object.entries(eventData.data)) {
+              line += `${key}:${value} `;
+            }
+          }
+          content += line.trim() + "\n";
+        });
+
+
+        // Construct a request and send it to the model API.
+        const prompt = promptRef("summary");
+        const resp = await prompt.generate({ input: { gameLog: content } });
+        // console.log(resp.output())
+
+        // Store the analysis in Firestore
+        const analysis = resp.output();
+        const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
+        await gameAnalysesRef.set({
+          ...analysis,
+          insertionTimestamp: FieldValue.serverTimestamp() // Add timestamp 
+        });
+
+
+        return analysis;
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        console.log('On retry #', retries);
+      }
+    }
+        // Construct a request and send it to the model API.
+        const prompt = promptRef("summary");
+        const resp = await prompt.generate({ input: { gameLog: content } });
+        // console.log(resp.output())
+
+        // Store the analysis in Firestore
+        const analysis = resp.output();
+        const gameAnalysesRef = db.collection('GameAnalyses').doc(gameId);
+        await gameAnalysesRef.set({
+          ...analysis,
+          insertionTimestamp: FieldValue.serverTimestamp() // Add timestamp 
+        });
+
+
+        return analysis;
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        console.log('On retry #', retries);
+      }
+    }
   }
 )
 

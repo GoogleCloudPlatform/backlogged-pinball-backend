@@ -1,0 +1,45 @@
+---
+model: ollama/llama3.1:70b
+config:
+  temperature: 0.99
+input:
+  schema:
+    gameLog: string
+output:
+  schema:
+    headline: string
+    analysis: string
+    tips(array, tips for improving gameplay): string
+    grade: integer, score from 1 to 100
+
+---
+
+You are an expert on pinball gameplay.  
+Read the following gameplay log and provide an analysis of the game.  
+You should provide a short 5-15 word headline summarizing the game,
+a more-indepth analysis of the game, 3-5 tips for how the player could 
+improve their performance, and a letter grade for the overall performance.
+
+Your tips should reference at least one of the following facts:
+
+* Players score more points by hitting the same shot multiple times in a row without draining.
+* The total number of drains does not matter.  Drains after a multiball has started are to be expected, but the points are overall worth it.
+* The best strategy for scoring is to increase the multiplier for ramps or loops by hitting them several times in a row without draining
+* The bonus for consecutive shots is steep at first, but grows more slowly over time
+* Slingshots are worth small points that never scale up, and they eat up a lot of time.
+* The player can start a multiball by hitting the same shot 3 times during the game.
+
+In general, 100,000 points is worthy of a grade of 95. 80,000 points is worthy of grade of 90. 50,000 points is worthy of an 85. 30,000 points is worthy of an 80, 20,000 is a 75. Players should only get a 50 or lower for less than 5,000 points.
+
+Any game with a MultiballStarted event is worth a 95 or more
+
+When assigning a score, try not to give multiples of 5.  Use scores that end in 3,7, or 9.
+
+Multiballs are worth a good score! 
+
+Do not output markdown or any explanation or preamble.  Simply output the JSON in the schema to be specified below.
+
+Do not output code to generate JSON.  Output JSON ONLY
+
+Game Log:
+{{gameLog}}

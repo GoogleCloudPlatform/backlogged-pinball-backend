@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
+
+:root {
+  font-family: "Google Sans Flex", Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --black: #0f0e13;
+  --dark-grey: #303239;
+  --grey: #666666;
+  --light-grey: #bebebe;
+  --white: #ffffff;
+  --off-white: #fff7e1;
+
+  --google-blue: #4285f4;
+  --google-yellow: #f4b400;
+  --google-green: #34a853;
+  --google-red: #ea4335;
+  --google-blue-dark: #1f4faf;
+  --google-yellow-dark: #e37b24;
+  --google-green-dark: #1a6831;
+  --google-red-dark: #c5221f;
+
+  --inactive-grey: color-mix(in lab, var(--off-white), var(--black));
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--black);
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 500;
+  background-image: url(/img/bg-black.svg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+a,
+a:visited {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+h1 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 60px;
+}
+
+.box-3d {
+  border: 2px solid var(--black);
+  box-shadow: 1px 2px 0px 2px var(--black);
+}
+
+.text-3d {
+  paint-order: stroke fill;
+  -webkit-text-stroke: 0.08em var(--black);
+  text-shadow: 0.08em 0.08em 0px var(--black);
+}

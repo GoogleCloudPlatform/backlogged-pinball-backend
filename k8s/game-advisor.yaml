@@ -27,7 +27,7 @@ spec:
       serviceAccount: genkit
       containers:
       - name: game-advisor
-        image: us-docker.pkg.dev/backlogged-ai/llm/game-advisor:v2.0.0
+        image: us-docker.pkg.dev/backlogged-ai/llm/game-advisor:v3.0.8
         resources:
           limits:
             memory: "4Gi"
@@ -48,7 +48,7 @@ metadata:
 spec:
   selector:
     app: game-advisor
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - port: 8080
     targetPort: 3400
