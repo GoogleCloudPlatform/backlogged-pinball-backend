@@ -1,4 +1,6 @@
 <script>
+	import HowItWorks from './HowItWorks.svelte';
+
 	import PromptForm from './PromptForm.svelte';
 
 	let userPrompt = $state('');
@@ -6,8 +8,8 @@
 
 <header>
 	<div class="cloud-logo"></div>
-	<div class="how-it-works">
-		<a class="text-3d box-3d" alt="how it works" href="about">How it works</a>
+	<div>
+		<HowItWorks></HowItWorks>
 	</div>
 </header>
 <main>
@@ -35,16 +37,6 @@
 	main {
 		width: 70%;
 		margin: 0 auto;
-	}
-
-	.how-it-works a {
-		display: block;
-		background-color: var(--google-blue);
-		color: var(--white);
-		font-size: 18px;
-		font-weight: 700;
-		border-radius: 50vh;
-		padding: 16px 32px;
 	}
 
 	.cloud-logo {

@@ -106,4 +106,10 @@
 	div.arrow.inactive {
 		opacity: 0;
 	}
+
+  @media (max-width: 1200px) {
+    div.prompt {
+      min-height: 140px;
+    }
+  }
 </style>

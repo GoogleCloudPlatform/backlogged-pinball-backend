@@ -29,4 +29,10 @@
 		gap: 14px;
 		margin-top: 40px;
 	}
+
+  @media (max-width: 1200px) {
+    .prompts {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
